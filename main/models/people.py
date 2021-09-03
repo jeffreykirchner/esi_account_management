@@ -2,11 +2,14 @@
 people model
 '''
 
+from main.models.experiments import Experiments
 from django.db import models
 import uuid
 
 #gloabal parameters for site
 class People(models.Model):
+
+    experiments = models.ManyToManyField(Experiments)
 
     first_name =  models.CharField(max_length = 1000, default = "Adam")                  #first name
     last_name =  models.CharField(max_length = 1000, default = "Smith")                  #last name
@@ -25,3 +28,4 @@ class People(models.Model):
     class Meta:
         verbose_name = 'People'
         verbose_name_plural = 'People'
+        ordering = ['last_name', 'first_name']
