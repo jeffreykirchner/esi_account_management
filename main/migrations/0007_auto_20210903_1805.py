@@ -14,8 +14,5 @@ class Migration(migrations.Migration):
             name='experiments',
             options={'ordering': ['name'], 'verbose_name': 'Experiment', 'verbose_name_plural': 'Experiments'},
         ),
-        migrations.AlterModelOptions(
-            name='people',
-            options={'ordering': ['last_name', 'first_name'], 'verbose_name': 'People', 'verbose_name_plural': 'People'},
-        ),
+       
     ]

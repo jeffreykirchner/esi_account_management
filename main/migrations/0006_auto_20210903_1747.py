@@ -24,9 +24,5 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Experiments',
             },
         ),
-        migrations.AddField(
-            model_name='people',
-            name='experiments',
-            field=models.ManyToManyField(to='main.Experiments'),
-        ),
+        
     ]

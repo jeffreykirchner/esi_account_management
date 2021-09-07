@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 
 from main.models import Parameters
 from main.models import Profile
+from main.models import Experiments
+
+from main.forms import ProfileAdminForm
 
 
 # Register your models here.
@@ -25,8 +28,10 @@ class ProfileAdmin(admin.ModelAdmin):
     '''
     People model admin
     '''
-    fields = ('user', 'organization', 'profile_id')
-    readonly_fields = ['profile_id']
+    form = ProfileAdminForm
+
+    fields = ('user', 'global_id', 'organization', 'experiments')
+    readonly_fields = ['user', 'global_id']
     list_display = ['__str__', 'organization']
 
     actions = []

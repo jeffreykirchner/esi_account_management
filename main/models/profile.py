@@ -9,16 +9,15 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 
+from main.models.experiments import Experiments
+
 #gloabal parameters for site
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    # first_name =  models.CharField(max_length = 1000, default = "Adam")                  #first name
-    # last_name =  models.CharField(max_length = 1000, default = "Smith")                  #last name
-    # email = models.EmailField(max_length = 254, default = "Adam_Smith@chapman.edu", unique=True)      #email address
-    organization = models.CharField(max_length = 1000, default = "Chapman University")   #organization
+    experiments = models.ManyToManyField(Experiments)
 
-    profile_id = models.UUIDField(default=uuid.uuid4, unique=True)
-    #password = models.CharField(max_length = 1000, default = "Super Secret")             #password
+    organization = models.CharField(max_length = 1000, default = "Chapman University")   #organization
+    global_id = models.UUIDField(default=uuid.uuid4, unique=True)                        #id used across all experiments
 
     timestamp = models.DateTimeField(auto_now_add= True)
     updated= models.DateTimeField(auto_now= True)
