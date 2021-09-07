@@ -46,3 +46,12 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
+class ExperimentsAdmin(admin.ModelAdmin):
+    '''
+    Experiments model admin
+    '''
+
+    actions = []
+
+admin.site.register(Experiments, ExperimentsAdmin)
+
