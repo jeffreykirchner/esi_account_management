@@ -1,0 +1,59 @@
+{% load crispy_forms_tags %}
+
+<div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class = "col">
+          Sign up
+        </div>        
+        <div class="col" style="text-align: right;">
+          <button type="button" class="btn btn-link" v-on:click="showHelp()" data-placement="bottom" title="Show Help Doc">
+              <i class="far fa-question-circle"></i> 
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+
+      <div v-if="status === 'update'">   
+
+        <form id="create_form">
+          {% csrf_token %}
+          
+          {% for i in form %}
+            <div class="row mt-2">
+              <div class = "col col-md-10 offset-md-1">  
+                {{ i|as_crispy_field }}         
+              </div>            
+            </div> 
+          {% endfor %}         
+                
+        </form>
+
+        <div class="row mt-4">
+          <div class="col col-md-5 offset-md-1">
+              <button type="button" class="btn btn-outline-primary" v-on:click="create()" title="Create an account"><span v-html="buttonText"></span></button>
+          </div>
+          <div class="col col-md-5">
+            <span style="float: right;">
+              <button type="button" class="btn btn-outline-primary" v-on:click="humanChecker()" title="Yes to humans, no to bots"><span v-html="humanButtonText"></span></button>
+            </span>
+          </div>
+        </div>
+
+      </div>
+      <div v-else>
+
+        <div class="row">
+          <div class = "col col-md-12 text-center">  
+                  
+              Your profile has been created, check your email for a confirmation link.<br>
+              <a href="">Send link again</a>                
+                    
+          </div>            
+        </div>
+
+      </div>
+    </div>      
+  </div>
