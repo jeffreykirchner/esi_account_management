@@ -11,7 +11,8 @@ import sys
 from django.utils.crypto import get_random_string
 from django.conf import settings
 
-from main.models import profile, parameters
+from main.models import Parameters
+from main.models import Profile
 
 def send_mass_email_verify(profile_list, request):
     '''
@@ -51,21 +52,21 @@ def profile_create_send_email(user):
     logger = logging.getLogger(__name__) 
     logger.info(f"Verify Email: {user.profile}")
 
-    params = parameters.objects.first()
+    parameters = Parameters.objects.first()
 
     user.profile.email_confirmed = get_random_string(length=32)   
     user.profile.save()
 
     user_list = []
     user_list.append({"email" : user.email,
-                      "variables": [{"name" : "activation link", "text" : f'{params.siteURL}/profileVerify/{user.profile.email_confirmed}'},
+                      "variables": [{"name" : "activation link", "text" : f'{parameters.site_URL}/profile-verify/{user.profile.email_confirmed}'},
                                     {"name" : "first name", "text" : user.first_name},
-                                    {"name" : "contact email", "text" : params.labManager.email}]})
+                                    {"name" : "contact email", "text" : parameters.contact_email}]})
 
     memo = f'Verfiy email address for user {user.id}'
 
     try:
-        return send_mass_email_service(user_list, params.emailVerificationTextSubject, params.emailVerificationResetText, memo)             
+        return send_mass_email_service(user_list, parameters.email_verification_text_subject, parameters.email_verification_text, memo)             
     except SMTPException as exc:
         logger.info(f'There was an error sending email: {exc}') 
         return {"mail_count":0, "error_message":str(exc)}

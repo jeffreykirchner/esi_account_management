@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-header">
+      Verify Your Email Address
+    </div>
+
+    <div class="card-body">
+      <div v-if="failed">
+        <div class="row">
+          <div class = "col">  
+            <center>                
+                The verification link no longer works.<br>
+                ***add link here***
+            </center>         
+          </div>            
+        </div>
+      </div>
+      <div v-else-if="emailVerified">
+        <div class="row">
+          <div class = "col text-center">             
+            Email verified.
+          </div>            
+        </div>
+        <div class="row">
+          <div class = "col text-center">             
+            You can now run ESI experiments.
+          </div>            
+        </div>
+        
+      </div>
+      <div v-else>
+                    
+          <div class="row">
+              <div class="col text-center">
+
+                  <button type="button" v-on:click="verifyEmail()" class="btn btn-outline-primary">
+                     <span v-html="buttonText"></span>
+                  </button>
+
+              </div>
+          </div>
+
+      </div>
+
+    </div>      
+</div>

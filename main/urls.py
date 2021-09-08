@@ -31,6 +31,7 @@ urlpatterns = [
     path('apple-touch-icon-120x120-precomposed.png', RedirectView.as_view(url='/static/apple-touch-icon-precomposed.png'), name='favicon'),
 
     path('create-account/', views.CreateAccountView.as_view(), name='create-account'),
+    path('verify-account/<str:token>/', views.ProfileVerify.as_view(), name='verify-account'),
 ]
 
 # urlpatterns += [

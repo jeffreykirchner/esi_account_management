@@ -6,6 +6,7 @@ from main.models import Profile
 from main.models import Experiments
 
 from main.forms import ProfileAdminForm
+from main.forms import ParametersAdminForm
 
 
 # Register your models here.
@@ -20,6 +21,9 @@ class ParametersAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
+    form = ParametersAdminForm
+    fields = ('site_URL', 'contact_email', 'email_verification_text_subject', 'email_verification_reset_text',
+              'password_reset_text_subject', 'password_reset_text')
     actions = []
 
 admin.site.register(Parameters, ParametersAdmin)

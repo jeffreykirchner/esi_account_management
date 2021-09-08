@@ -18,7 +18,9 @@ class Profile(models.Model):
 
     organization = models.CharField(max_length = 1000, default = "Chapman University")   #organization
     global_id = models.UUIDField(default=uuid.uuid4, unique=True)                        #id used across all experiments
-    email_confirmed =  models.CharField(verbose_name="Email Confirmed",max_length = 100,default="no")                #yes/code/no
+    email_confirmed =  models.CharField(verbose_name="Email Confirmed", max_length = 100, default="no")                #yes/code/no
+
+    password_reset_key = models.UUIDField(verbose_name='Password Reset Key', null=True, blank=True)                     #log in key used to reset subject password
 
     timestamp = models.DateTimeField(auto_now_add= True)
     updated= models.DateTimeField(auto_now= True)

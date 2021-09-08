@@ -3,9 +3,11 @@ create account functionality
 '''
 import json
 import logging
+from main.models.experiments import Experiments
 
 from django.contrib.auth import logout
 from django.contrib.auth import login
+from django.contrib.auth import get_user_model
 
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -13,6 +15,9 @@ from django.views.generic import TemplateView
 from django.db.models import CharField, F, Value
 
 from main.models import HelpDocs
+from main.models import Profile
+from main.models import Profile
+
 from main.forms import CreateAccountForm
 
 from main.globals import profile_create_send_email
@@ -80,7 +85,7 @@ def take_create_account(request, data):
 
     if f.is_valid():
         
-        u = create_acocunt(f.cleaned_data['email'].strip().lower(),
+        user = create_acocunt(f.cleaned_data['email'].strip().lower(),
                             f.cleaned_data['email'].strip().lower(),
                             f.cleaned_data['password1'],
                             f.cleaned_data['first_name'].strip().capitalize(),
@@ -88,11 +93,11 @@ def take_create_account(request, data):
                             f.cleaned_data['organization'].strip(),)
 
         #send email verification
-        profile_create_send_email(u)
+        profile_create_send_email(user)
 
         #log new user in
         #user = authenticate(request, username=u.username, password=u.password)
-        login(request, u) 
+        login(request, user) 
          
         return JsonResponse({"status":"success"}, safe=False)
 
@@ -104,3 +109,27 @@ def create_acocunt(email, user_name, password, first_name, last_name, organizati
     '''
     create new account
     '''
+
+    logger = logging.getLogger(__name__) 
+
+    #create new user
+    user = get_user_model().objects.create_user(username=user_name,
+                                                email=email,
+                                                password=password,                                         
+                                                first_name=first_name,
+                                                last_name=last_name)
+
+    user.save()
+
+    #attach profile to user
+    profile = Profile(user=user,
+                      organization=organization)
+    profile.save()
+    
+    # add default experiments to profile
+    profile.experiments.set(Experiments.objects.filter(available_to_all=True))
+    profile.save()    
+
+    logger.info(f'Account created: {user}')
+
+    return user
