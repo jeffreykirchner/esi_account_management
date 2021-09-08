@@ -18,6 +18,7 @@ class Profile(models.Model):
 
     organization = models.CharField(max_length = 1000, default = "Chapman University")   #organization
     global_id = models.UUIDField(default=uuid.uuid4, unique=True)                        #id used across all experiments
+    email_confirmed =  models.CharField(verbose_name="Email Confirmed",max_length = 100,default="no")                #yes/code/no
 
     timestamp = models.DateTimeField(auto_now_add= True)
     updated= models.DateTimeField(auto_now= True)

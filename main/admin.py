@@ -30,7 +30,7 @@ class ProfileAdmin(admin.ModelAdmin):
     '''
     form = ProfileAdminForm
 
-    fields = ('user', 'global_id', 'organization', 'experiments')
+    fields = ('user', 'global_id', 'organization', 'email_confirmed', 'experiments')
     readonly_fields = ['user', 'global_id']
     list_display = ['__str__', 'organization']
 

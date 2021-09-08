@@ -15,6 +15,8 @@ from django.db.models import CharField, F, Value
 from main.models import HelpDocs
 from main.forms import CreateAccountForm
 
+from main.globals import profile_create_send_email
+
 
 class CreateAccountView(TemplateView):
     '''
@@ -83,12 +85,10 @@ def take_create_account(request, data):
                             f.cleaned_data['password1'],
                             f.cleaned_data['first_name'].strip().capitalize(),
                             f.cleaned_data['last_name'].strip().capitalize(),
-                            f.cleaned_data['organization'].strip(),
-                           )
+                            f.cleaned_data['organization'].strip(),)
 
+        #send email verification
         profile_create_send_email(u)
-
-        u.profile.setup_email_filter()
 
         #log new user in
         #user = authenticate(request, username=u.username, password=u.password)

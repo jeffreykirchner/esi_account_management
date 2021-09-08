@@ -13,6 +13,9 @@ class ProfileAdminForm(forms.ModelForm):
     organization = forms.CharField(label='Organization',
                                    widget=forms.TextInput(attrs={"size":"125"}))    
 
+    email_confirmed = forms.CharField(label='Email Confirmed (no/code/yes)',
+                                      widget=forms.TextInput(attrs={"size":"125"}))
+
     experiments = forms.ModelMultipleChoiceField(label="Grant Access",
                                                  required=False,
                                                  queryset=Experiments.objects.all().order_by("name"),

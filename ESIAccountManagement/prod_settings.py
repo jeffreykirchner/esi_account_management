@@ -77,5 +77,8 @@ LOGGING = {
     },
 }
 
-#emails
+#email service
+EMAIL_MS_HOST = os.environ['EMAIL_MS_HOST']
+EMAIL_MS_USER_NAME = os.environ['EMAIL_MS_USER_NAME']
+EMAIL_MS_PASSWORD = os.environ['EMAIL_MS_PASSWORD']
 
