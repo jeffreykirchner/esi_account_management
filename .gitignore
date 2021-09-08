@@ -1,5 +1,5 @@
 logs/*
-ESIAccountManagmentEnv
+ESIAccountManagementEnv
 .vscode/*
 *.pyc
 local_settings.py

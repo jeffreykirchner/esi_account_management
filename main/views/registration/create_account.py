@@ -5,6 +5,8 @@ import json
 import logging
 
 from django.contrib.auth import logout
+from django.contrib.auth import login
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.generic import TemplateView
@@ -27,7 +29,7 @@ class CreateAccountView(TemplateView):
         data = json.loads(request.body.decode('utf-8'))
 
         if data["action"] == "create":
-            return create_account(request, data)
+            return take_create_account(request, data)
 
         return JsonResponse({"response" :  "error"}, safe=False)
 
@@ -55,7 +57,50 @@ class CreateAccountView(TemplateView):
                                                     'helpText':helpText,
                                                     'form_ids':form_ids})
 
-def create_account(request, data):
+def take_create_account(request, data):
     '''
-    create a new account
+    take create a new account post
+    '''
+
+    logger = logging.getLogger(__name__) 
+    logger.info("Create Accunt")
+
+    form_data_dict = {}             
+
+    for field in data["formData"]:            
+        form_data_dict[field["name"]] = field["value"]
+
+        #remove caps from email form
+        if field["name"] == "email":
+            form_data_dict["email"] = form_data_dict["email"].strip().lower()
+    
+    f = CreateAccountForm(form_data_dict)
+
+    if f.is_valid():
+        
+        u = create_acocunt(f.cleaned_data['email'].strip().lower(),
+                            f.cleaned_data['email'].strip().lower(),
+                            f.cleaned_data['password1'],
+                            f.cleaned_data['first_name'].strip().capitalize(),
+                            f.cleaned_data['last_name'].strip().capitalize(),
+                            f.cleaned_data['organization'].strip(),
+                           )
+
+        profile_create_send_email(u)
+
+        u.profile.setup_email_filter()
+
+        #log new user in
+        #user = authenticate(request, username=u.username, password=u.password)
+        login(request, u) 
+         
+        return JsonResponse({"status":"success"}, safe=False)
+
+    else:
+        logger.info(f"createUser validation error")
+        return JsonResponse({"status":"error", "errors":dict(f.errors.items())}, safe=False)
+
+def create_acocunt(email, user_name, password, first_name, last_name, organization):
+    '''
+    create new account
     '''
