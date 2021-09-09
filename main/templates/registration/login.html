@@ -12,26 +12,6 @@
 
 {% block content %}
 
-{%for i in fpn_list%}
-<!-- notification cards -->
-<div class="row justify-content-center mb-4"> 
-  <div class="col col-sm-6">
-
-    <div class="card mx-auto">
-      <div class="card-header">
-        <h5>{{i.subject_text}}</h5>
-      </div>
-
-      <div class="card-body">
-        {{i.body_text | safe}}
-      </div>
-      
-    </div>
-  </div>
-
-</div>
-{%endfor%}
-
 <!-- login card -->
 <div class="row justify-content-center"> 
   <div class="col col-sm-6">
@@ -44,7 +24,7 @@
 
       <div class="card-body">
 
-        <form id="login_form" v-on:submit.prevent="onSubmit">
+        <form id="login_form" >
           {% csrf_token %}        
           <div class="row">
             <div class = "col col-sm-8 offset-sm-2">  

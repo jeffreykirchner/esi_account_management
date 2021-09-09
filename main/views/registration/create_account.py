@@ -93,13 +93,20 @@ def take_create_account(request, data):
                             f.cleaned_data['organization'].strip(),)
 
         #send email verification
-        profile_create_send_email(user)
+        try:
+            result = profile_create_send_email(user)   
+            status = "success"
+
+            if result["mail_count"] == 0:
+                status = "fail"
+        except:
+            status = "fail"
 
         #log new user in
         #user = authenticate(request, username=u.username, password=u.password)
         login(request, user) 
          
-        return JsonResponse({"status":"success"}, safe=False)
+        return JsonResponse({"status":status}, safe=False)
 
     else:
         logger.info(f"createUser validation error")

@@ -11,7 +11,7 @@ from main import views
 
 urlpatterns = [
 
-    path('', views.root_path),
+    path('', views.ExperimentsView.as_view()),
 
     re_path(r'^admin/login/$', views.LoginView.as_view()),
     re_path(r'^admin/logout/', views.LogoutView.as_view()),
@@ -30,8 +30,12 @@ urlpatterns = [
     path('apple-touch-icon.png', RedirectView.as_view(url='/static/apple-touch-icon-precomposed.png'), name='favicon'),
     path('apple-touch-icon-120x120-precomposed.png', RedirectView.as_view(url='/static/apple-touch-icon-precomposed.png'), name='favicon'),
 
+    path('account/', views.AccountView.as_view(), name='account'),
     path('create-account/', views.CreateAccountView.as_view(), name='create-account'),
-    path('verify-account/<str:token>/', views.ProfileVerify.as_view(), name='verify-account'),
+    path('verify-account/<str:token>/', views.VerifyAccount.as_view(), name='verify-account'),
+    path('verify-account-resend/', views.VerifyAccountResend.as_view(), name='verify-account-resend'),
+
+    path('experiments/', views.ExperimentsView.as_view(), name='experiments'),
 ]
 
 # urlpatterns += [

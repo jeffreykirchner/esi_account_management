@@ -6,11 +6,11 @@
     <div class="card-body">
       <div v-if="failed">
         <div class="row">
-          <div class = "col">  
-            <center>                
+          <div class = "col text-center">               
                 The verification link no longer works.<br>
-                ***add link here***
-            </center>         
+                <a href="{% url 'verify-account-resend' %}">
+                  Resend link.
+                </a>
           </div>            
         </div>
       </div>
@@ -32,7 +32,7 @@
           <div class="row">
               <div class="col text-center">
 
-                  <button type="button" v-on:click="verifyEmail()" class="btn btn-outline-primary">
+                  <button type="button" v-on:click="verifyEmail()" class="btn btn-outline-primary" title="Click to verify your email address.">
                      <span v-html="buttonText"></span>
                   </button>
 

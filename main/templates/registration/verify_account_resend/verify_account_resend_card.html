@@ -1,0 +1,40 @@
+<div class="card" v-cloak >
+    <div class="card-header">
+      Resend Verification Email
+    </div>
+
+    <div class="card-body" >
+
+      <div v-if="status === 'update'"> 
+          <div class="row" v-if="emailVerified === false">
+            <div class="col col-lg-8 offset-lg-2" style="text-align: center;">
+                Your email account is not verified.<br>
+                Your email can be edited here: <a href="{%url 'account'%}">Account</a>.
+            </div>
+          </div>                         
+          <div class="row mt-2">
+            <div class="col col-lg-8 offset-lg-2" style="text-align: center;">
+                <button type="submit" class="btn btn-outline-primary" v-on:click="sendVerificationEmail()">
+                  <span v-html="buttonText"></span>
+                </button>
+            </div>
+          </div> 
+      </div>  
+      <div v-if="status === 'success'">
+        <div class="row">
+            <div class = "col" style="text-align: center;">              
+                Email Sent.         
+            </div>            
+        </div>
+      </div>
+      <div v-if="status === 'fail'">        
+        <div class="row">
+            <div class = "col" style="text-align: center;">  
+              There was an error sending the email please contact<br>
+              <a v-bind:href= "'mailto:' + adminEmail">[[adminEmail]]</a>     
+            </div>            
+        </div>
+      </div>
+
+    </div>      
+</div>

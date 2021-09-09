@@ -2,38 +2,30 @@ axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
 var app = Vue.createApp({
-    delimiters: ["[[", "]]"],
-      
-    data() {return {
-        buttonText : 'Submit <i class="fas fa-sign-in-alt"></i>',
-        humanButtonText : 'Press if human <i class="far fa-user-circle"></i>',
-        loginErrorText : "",
+
+    delimiters: ['[[', ']]'],
+    
+    data() {return{
+        buttonText : '<i class="fas fa-user-edit"></i> Update',
         form_ids : {{form_ids|safe}},    
-        status:"update", 
-        human:false,                  
+        status: "update", 
+        email_verification_required: false,                  
     }},
 
     methods:{
         //get current, last or next month
 
-        create(){
-            if(!app.$data.human)
-            {
-            alert("Please confirm you are a person.");
-            return;
-            }
+        update(){
 
             app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
-            app.$data.loginErrorText = "";
-
+            
             axios.post('{{request.path}}', {
-                    action :"create",
-                    formData : $("#create_form").serializeArray(), 
-                                                
+                    action :"update",
+                    formData : $("#updateForm").serializeArray(),                              
                 })
                 .then(function (response) {     
                     
-                status=response.data.status;                               
+                status = response.data.status;                               
 
                 app.clearMainFormErrors();
 
@@ -44,10 +36,11 @@ var app = Vue.createApp({
                 }
                 else
                 {
-                    app.$data.status="done";
+                    app.$data.status = "done";
+                    app.$data.emailVerificationRequired = response.data.email_verification_required;
                 }                        
 
-                app.$data.buttonText = 'Submit <i class="fas fa-sign-in-alt"></i>';
+                app.$data.buttonText = 'Update <i class="fas fa-sign-in-alt"></i>';
 
                 })
                 .catch(function (error) {
@@ -55,21 +48,7 @@ var app = Vue.createApp({
                 });                        
             },
 
-            showHelp:function showHelp(){                        
-            $('#helpModal').modal('show');
-            },
-
-            humanChecker:function(){
-            app.$data.humanButtonText = 'Press if human <i class="fas fa-spinner fa-spin"></i>';
-            setTimeout(app.humanConfirm, 1000); 
-            },
-
-            humanConfirm:function(){
-            app.$data.humanButtonText = 'Thanks human <i class="fas fa-user-check"></i>';
-            app.$data.human=true;
-            },
-
-            clearMainFormErrors:function(){
+            clearMainFormErrors(){
 
                 s = app.$data.form_ids;                    
                 for(var i in s)

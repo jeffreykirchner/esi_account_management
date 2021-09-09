@@ -10,10 +10,7 @@ def email_confirmed(function):
         else:
             #email not verified redirect to verifiction resend          
 
-            return render(request, 'registration/profileVerifyResend.html',{})
-
-    wrap.__doc__ = function.__doc__
-    wrap.__name__ = function.__name__
+            return render(request, 'registration/verify_account_resend.html',{})
     return wrap
 
 def in_debug_mode(function):

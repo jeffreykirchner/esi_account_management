@@ -82,42 +82,34 @@
                     <ul class="navbar-nav me-auto">                       
                         
                         <li class="nav-item px-2">
-                            <a href="{% url 'staff-home' %}"  data-placement="bottom" title="Session list">
-                                <i class="fas fa-flask"></i> Sessions
+                            <a href="{%url 'experiments'%}"  data-placement="bottom" title="Experiments list">
+                                <i class="fas fa-flask"></i> Experiments
                             </a>
                         </li>
 
                         <li class="nav-item px-2">
-                            <a href="{% url 'staff_demo' %}"  data-placement="bottom" title="Record sheet demo">
-                                <i class="fas fa-chalkboard-teacher"></i> Demo
+                            <a href="{% url 'account'%}"  data-placement="bottom" title="Update Account">
+                                <i class="far fa-user"></i> Account
                             </a>
+                        </li>
+
+                        <li class="nav-item px-2">
+                            <a href="{% url 'logout'%}"><i class="fas fa-sign-out-alt fa-fw"></i> 
+                                Log Out
+                            </a>                                
                         </li>
 
                         {%if user.is_superuser%}
                             <li class="nav-item px-2">
-                                <a href="{% url 'staff_admin_tools' %}"  data-placement="bottom" title="Admin Tools">
-                                    <i class="fas fa-tools"></i> Tools
+                                <a href="{% url 'admin:index' %}"  data-placement="bottom" title="Admin Site">
+                                    <i class="fas fa-tools"></i> Admin
                                 </a>
                             </li>
                         {%endif%}
                         
                     
                     </ul>
-                    <div class="d-flex dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Menu
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
-                            {%if user.is_superuser%}
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'admin:index' %}"  data-placement="bottom" title="Admin Panel"><i class="fas fa-cogs fa-fw"></i> Admin</a>
-                                </li>
-                            {%endif%}
-                            <li>
-                                <a class="dropdown-item" href="{% url 'logout'%}"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
-                            </li>                        
-                        </ul>
-                    </div>
+                    
                     <div class="d-flex">
                         <button type="button" class="btn btn-link" id="helpButton" style="text-align: right;" data-toggle="tooltip" data-placement="bottom" title="Show Help Doc">
                             <i class="far fa-question-circle"></i> 

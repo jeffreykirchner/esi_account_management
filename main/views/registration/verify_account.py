@@ -10,12 +10,11 @@ from django.views.generic import TemplateView
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 
-#user account info
-class ProfileVerify(TemplateView):
+class VerifyAccount(TemplateView):
     '''
-    verify profile class view
+    verify account class view
     '''
-    template_name = 'registration/profile_verify.html'
+    template_name = 'registration/verify_account.html'
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -25,7 +24,7 @@ class ProfileVerify(TemplateView):
         data = json.loads(request.body.decode('utf-8'))
 
         if data["action"] == "verifyEmail":
-            return verifyEmail(request,data)        
+            return verify_email(request,data)        
 
         return JsonResponse({"status":"fail"}, safe=False)
 
@@ -52,27 +51,25 @@ class ProfileVerify(TemplateView):
                                                                   'token':token}) 
 
 #verify user email address
-def verifyEmail(request, data):
+def verify_email(request, data):
     logger = logging.getLogger(__name__)
     logger.info("Verify email")
     logger.info(data)
 
-    emailVerified = True
-    failed=False
-    try:
+    email_verified = True
+    failed = False
 
-        u=request.user                
-        u.is_active=True
-        u.profile.email_confirmed="yes"
-        u.profile.paused=False
+    try:
+        u = request.user                
+        u.is_active = True
+        u.profile.email_confirmed = "yes"
         u.profile.save()
         u.save()    
-
-        status="done"            
+         
     except ObjectDoesNotExist:
         print("Failed to validate email")
-        emailVerified = False
+        email_verified = False
         failed = False
 
-    return JsonResponse({'emailVerified':emailVerified,
+    return JsonResponse({'emailVerified':email_verified,
                          'failed':failed,}, safe=False)

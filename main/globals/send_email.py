@@ -21,22 +21,22 @@ def send_mass_email_verify(profile_list, request):
     logger = logging.getLogger(__name__)
     logger.info(f"Send mass verification email to list: {profile_list}")
 
-    params = parameters.objects.first()
+    params = Parameters.objects.first()
 
     if len(profile_list) == 0:
         return {"mailCount":0, "errorMessage":"No valid users"}
 
-    for prfl in profile_list:
-        prfl.email_confirmed = get_random_string(length=32)
+    for profile in profile_list:
+        profile.email_confirmed = get_random_string(length=32)
     
-    profile.objects.bulk_update(profile_list, ['email_confirmed'])
+    Profile.objects.bulk_update(profile_list, ['email_confirmed'])
 
     user_list = []
 
-    for prfl in profile_list:     
-        user_list.append({"email" : prfl.user.email,
-                          "variables": [{"name" : "activation link", "text" : f'{params.siteURL}/profileVerify/{prfl.email_confirmed}'},
-                                        {"name" : "first name", "text" : prfl.user.first_name},
+    for profile in profile_list:     
+        user_list.append({"email" : profile.user.email,
+                          "variables": [{"name" : "activation link", "text" : f'{params.siteURL}/verify-account/{profile.email_confirmed}/'},
+                                        {"name" : "first name", "text" : profile.user.first_name},
                                         {"name" : "contact email", "text" : params.labManager.email}]})
             
     memo = 'Bulk account deactivation'
@@ -59,11 +59,11 @@ def profile_create_send_email(user):
 
     user_list = []
     user_list.append({"email" : user.email,
-                      "variables": [{"name" : "activation link", "text" : f'{parameters.site_URL}/profile-verify/{user.profile.email_confirmed}'},
+                      "variables": [{"name" : "activation link", "text" : f'{parameters.site_URL}/verify-account/{user.profile.email_confirmed}/'},
                                     {"name" : "first name", "text" : user.first_name},
                                     {"name" : "contact email", "text" : parameters.contact_email}]})
 
-    memo = f'Verfiy email address for user {user.id}'
+    memo = f'Verfiy email address for user {user}'
 
     try:
         return send_mass_email_service(user_list, parameters.email_verification_text_subject, parameters.email_verification_text, memo)             

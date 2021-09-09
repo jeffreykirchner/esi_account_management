@@ -5,22 +5,16 @@
 
     <script type="text/javascript">
         $(document).ready(function(){                         
-          {%include "registration/profile_verify/profile_verify.js"%}
+          {%include "registration/verify_account/verify_account.js"%}
         });
     </script>
-
-    <style>
-      [v-cloak] {
-        display: none;
-      }
-    </style>
 {%endblock head%}
 
 {% block content %}
 
 <div class="row justify-content-md-center" v-cloak>
   <div class="col col-lg-6">
-    {%include "registration/profile_verify/profile_verify_card.html"%}
+    {%include "registration/verify_account/verify_account_card.html"%}
   </div>
 </div>
 

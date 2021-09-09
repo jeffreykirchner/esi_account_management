@@ -1,0 +1,48 @@
+{% load crispy_forms_tags %}
+
+<div class="card">
+    <div class="card-header">
+      Account Information
+    </div>
+
+    <div class="card-body">
+
+      <div v-if = 'status === "update"'>     
+
+        <form autocomplete="off" id="updateForm">
+          {% csrf_token %}            
+          
+          {% for i in form %}
+            <div class="row mt-2">
+                <div class = "col col-md-10 offset-md-1">  
+                {{ i|as_crispy_field }}         
+                </div>            
+            </div> 
+          {% endfor %}  
+        </form>
+
+        <div class="row mt-4">
+          <div class="col col-md-10 offset-md-1">
+              <button class="btn btn-outline-primary" v-on:click="update()" title="Update your profile">
+                <span v-html="buttonText"></span>
+              </button>
+          </div>
+        </div>           
+      
+      </div>
+      <div v-else>
+
+        <div class="row">
+          <div class = "col col-md-10 offset-md-1 text-center">  
+                            
+              Account updated.<br>
+              <div v-show='email_verification_required'>
+                Your email address was changed, check your inbox for a confirmation link.<br>
+              </div>
+              <a href="">Return</a>
+                     
+          </div>            
+        </div>
+      </div>
+    </div>      
+  </div>

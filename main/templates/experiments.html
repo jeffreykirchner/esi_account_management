@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{%block head%}
+<script type="text/javascript">
+  $(document).ready(function(){  
+    {%include "experiments/experiments.js"%}
+  });
+
+</script>
+{%endblock head%}
+
+{% block content %}
+
+<div class="row justify-content-lg-center">
+  <div class="col col-lg-6">
+    {%include "experiments/experiments_card.html"%}
+  </div>
+</div>
+
+{% endblock %}

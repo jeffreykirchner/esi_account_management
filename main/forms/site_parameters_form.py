@@ -13,8 +13,8 @@ class ParametersAdminForm(forms.ModelForm):
     email_verification_text_subject = forms.CharField(label='Verification email, subject',
                                                       widget=forms.TextInput(attrs={"size":"125"}))
     
-    email_verification_reset_text = forms.CharField(label='Verification email, body',
-                                                    widget=forms.Textarea(attrs={"size":"125", "cols":"125"}))
+    email_verification_text = forms.CharField(label='Verification email, body',
+                                              widget=forms.Textarea(attrs={"size":"125", "cols":"125"}))
 
     password_reset_text_subject = forms.CharField(label='Password reset email, subject',
                                                   widget=forms.TextInput(attrs={"size":"125"}))

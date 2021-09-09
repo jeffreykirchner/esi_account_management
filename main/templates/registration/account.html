@@ -4,7 +4,7 @@
 {%block head%}
 <script type="text/javascript">
   $(document).ready(function(){  
-    {%include "registration/account_create/account_create.js"%}
+    {%include "registration/account/account.js"%}
   });
 
 </script>
@@ -12,9 +12,9 @@
 
 {% block content %}
 
-<div class="row justify-content-lg-center">
+<div class="row justify-content-md-center mb-4" v-cloak>
   <div class="col col-lg-6">
-    {%include "registration/account_create/account_create_card.html"%}
+    {%include "registration/account/account_card.html"%}
   </div>
 </div>
 
