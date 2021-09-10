@@ -7,7 +7,7 @@ from django.db import models
 #gloabal parameters for site
 class Experiments(models.Model):
 
-    name =  models.CharField(max_length = 1000, default = "*** New Experiment **")            #name of the experiment
+    name =  models.CharField(max_length = 1000, default = "*** New Experiment **", unique=True)            #name of the experiment
     url =  models.URLField(max_length = 200, default = "https://www.google.com")              #URL of the experiment
     available_to_all = models.BooleanField(default=False)                                     #allow all users access 
     

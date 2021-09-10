@@ -1,5 +1,9 @@
+import logging
+
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.utils.translation import ngettext
 
 from main.models import Parameters
 from main.models import Profile
@@ -60,7 +64,32 @@ class ExperimentsAdmin(admin.ModelAdmin):
     Experiments model admin
     '''
 
-    actions = []
+    #set the shared status for all users to match experiment's setting
+    def update_shared_status(self, request, queryset):
+        logger = logging.getLogger(__name__)
+        logger.info("setup_test_users")
+
+        counter=0
+
+        for experiment in queryset:
+            if experiment.available_to_all:
+                for profile in Profile.objects.all():
+                    profile.experiments.add(experiment)
+                    counter += 1
+            else:
+                for profile in Profile.objects.all():
+                    profile.experiments.remove(experiment)
+                    counter += 1
+
+                
+        self.message_user(request, ngettext(
+                '%d user was updated.',
+                '%d users were updated.',
+                counter,
+        ) % counter, messages.SUCCESS)
+    update_shared_status.short_description = "Set accounts to shared status of selected experiments."
+
+    actions = ['update_shared_status']
 
 admin.site.register(Experiments, ExperimentsAdmin)
 

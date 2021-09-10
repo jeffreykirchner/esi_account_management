@@ -40,11 +40,12 @@ class ExperimentsView(TemplateView):
         '''
 
         try:
-            helpText = help_docs.objects.annotate(rp = Value(request.path, output_field=CharField()))\
+            help_text = help_docs.objects.annotate(rp = Value(request.path, output_field=CharField()))\
                                         .filter(rp__icontains=F('path')).first().text
 
         except Exception  as e:
-            helpText = "No help doc was found."
+            help_text = "No help doc was found."
 
-        return render(request, self.template_name, {'helpText': helpText})
+        return render(request, self.template_name, {'helpText':help_text,
+                                                    'experiments': request.user.profile.experiments.all()})
 

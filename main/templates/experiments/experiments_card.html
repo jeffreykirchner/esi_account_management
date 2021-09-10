@@ -5,6 +5,32 @@
 
     <div class="card-body">
 
+      <table class="table table-hover table-condensed table-responsive-md">                            
+
+        <thead>
+            
+            <th scope="col" style="text-align: center;">
+                Name                             
+            </th>
+            <th scope="col" style="text-align: center;">
+                Link
+            </th>                                                     
+        </thead>
+
+        <tbody id="trade_list" style="font-size: large;">        
+          {% for experiment in experiments %}
+            <tr>   
+              <td style="text-align: center;">
+                {{experiment.name}}
+              </td>
+              <td style="text-align: center;">
+                <a href='{{experiment.url}}'>{{experiment.url}}</a>
+              </td>
+            </tr>
+          {% endfor %}                                                                                             
+        </tbody>
+        
+      </table>
       
     </div>      
   </div>

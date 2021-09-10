@@ -30,16 +30,19 @@ urlpatterns = [
     path('apple-touch-icon.png', RedirectView.as_view(url='/static/apple-touch-icon-precomposed.png'), name='favicon'),
     path('apple-touch-icon-120x120-precomposed.png', RedirectView.as_view(url='/static/apple-touch-icon-precomposed.png'), name='favicon'),
 
+    #ui
     path('account/', views.AccountView.as_view(), name='account'),
     path('create-account/', views.CreateAccountView.as_view(), name='create-account'),
     path('verify-account/<str:token>/', views.VerifyAccount.as_view(), name='verify-account'),
     path('verify-account-resend/', views.VerifyAccountResend.as_view(), name='verify-account-resend'),
-
     path('experiments/', views.ExperimentsView.as_view(), name='experiments'),
+
+    #api
+    path('get-auth/<str:app_name>/', views.GetAuthView.as_view()),
 ]
 
-# urlpatterns += [
-#     path('api-auth/', include('rest_framework.urls')),
-# ]
+urlpatterns += [
+    path('api-auth/', include('rest_framework.urls')),
+]
 
-# urlpatterns = format_suffix_patterns(urlpatterns)
+urlpatterns = format_suffix_patterns(urlpatterns)

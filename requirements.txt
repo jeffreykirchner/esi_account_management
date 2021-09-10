@@ -6,5 +6,5 @@ djangorestframework==3.12.*
 psycopg2-binary
 pytz==2021.1
 requests==2.26.*
-sqlparse==0.4.1
+sqlparse==0.4.2
 whitenoise==5.3.0
