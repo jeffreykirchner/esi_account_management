@@ -6,5 +6,6 @@ from .root_path import *
 from .registration import *
 from .experiments import *
 from .get_auth import *
+from .password_reset import *
 
 
