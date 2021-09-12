@@ -7,5 +7,6 @@ from .registration import *
 from .experiments import *
 from .get_auth import *
 from .password_reset import *
+from .password_reset_change import *
 
 

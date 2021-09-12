@@ -84,26 +84,26 @@
                         {% if user.is_authenticated %}
                         <li class="nav-item px-2">
                             <a href="{%url 'experiments'%}"  data-placement="bottom" title="Experiments list">
-                                <i class="fas fa-flask"></i> Experiments
+                                Experiments <i class="fas fa-flask"></i> 
                             </a>
                         </li>
 
                         <li class="nav-item px-2">
                             <a href="{% url 'account'%}"  data-placement="bottom" title="Update Account">
-                                <i class="far fa-user"></i> Account
+                                Account <i class="far fa-user"></i> 
                             </a>
                         </li>
 
                         <li class="nav-item px-2">
-                            <a href="{% url 'logout'%}"><i class="fas fa-sign-out-alt fa-fw"></i> 
-                                Log Out
+                            <a href="{% url 'logout'%}"> 
+                                Log Out <i class="fas fa-sign-out-alt fa-fw"></i>
                             </a>                                
                         </li>
 
                         {%if user.is_superuser%}
                             <li class="nav-item px-2">
                                 <a href="{% url 'admin:index' %}"  data-placement="bottom" title="Admin Site">
-                                    <i class="fas fa-tools"></i> Admin
+                                    Admin <i class="fas fa-tools"></i> 
                                 </a>
                             </li>
                         {%endif%}

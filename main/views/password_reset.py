@@ -11,14 +11,14 @@ from django.contrib.auth import logout
 from django.views.generic import TemplateView
 
 from main.models import parameters
-from main.forms import passwordResetForm
+from main.forms import PasswordResetForm
 from main.globals import send_mass_email_service
 
 class PasswordResetView(TemplateView):
     '''
-    experiments class view
+    password reset class view
     '''
-    template_name = 'experiments.html'
+    template_name = 'registration/password_reset.html'
 
     def post(self, request, *args, **kwargs):
         '''
@@ -38,14 +38,14 @@ class PasswordResetView(TemplateView):
 
         logout(request)
 
-        form = passwordResetForm()
+        form = PasswordResetForm()
 
         form_ids=[]
         for i in form:
             form_ids.append(i.html_name)
 
-        return render(request,'registration/passwordReset.html',{"form":form,
-                                                                 "form_ids":form_ids})
+        return render(request,self.template_name,{"form":form,
+                                                  "form_ids":form_ids})
     
 def send_reset(request, data):
     logger = logging.getLogger(__name__) 
@@ -58,7 +58,7 @@ def send_reset(request, data):
     for field in data["formData"]:            
         form_data_dict[field["name"]] = field["value"]
     
-    form = passwordResetForm(form_data_dict)
+    form = PasswordResetForm(form_data_dict)
 
     if form.is_valid():
 

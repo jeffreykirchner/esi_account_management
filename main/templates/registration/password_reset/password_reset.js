@@ -5,42 +5,45 @@ var app = Vue.createApp({
 
     delimiters: ['[[', ']]'],
     
-    data() {return{
-        buttonText : 'Update <i class="fas fa-user-edit"></i>',
-        form_ids : {{form_ids|safe}},    
-        status: "update", 
-        email_verification_required: false,                  
+    data() {return {
+        buttonText : 'Send <i class="fas fa-envelope"></i> ',
+        messageText : "",
+        form_ids : {{form_ids|safe}},                          
     }},
 
     methods:{
         //get current, last or next month
 
-        update(){
-
+        send_reset(){
             app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            axios.post('{{request.path}}', {
-                    action :"update",
-                    formData : $("#updateForm").serializeArray(),                              
+            app.$data.messageText = "";
+
+            axios.post('/accounts/passwordReset/', {
+                    action :"send_reset",
+                    formData : $("#password_reset_form").serializeArray(), 
+                                                
                 })
                 .then(function (response) {     
                     
-                status = response.data.status;                               
+                status=response.data.status;                               
 
                 app.clearMainFormErrors();
 
-                if(status == "error")
+                if(status == "validation")
                 {              
                     //form validation error           
                     app.displayErrors(response.data.errors);
                 }
+                else if(status == "error")
+                {
+                    app.$data.messageText = response.data.message;
+                }
                 else
                 {
-                    app.$data.status = "done";
-                    app.$data.emailVerificationRequired = response.data.email_verification_required;
-                }                        
+                    app.$data.messageText = "Message sent to your email."
+                }
 
-                app.$data.buttonText = 'Update <i class="fas fa-sign-in-alt"></i>';
+                app.$data.buttonText = '<i class="fas fa-envelope"></i> Send';
 
                 })
                 .catch(function (error) {
@@ -48,7 +51,7 @@ var app = Vue.createApp({
                 });                        
             },
 
-            clearMainFormErrors(){
+        clearMainFormErrors(){
 
                 s = app.$data.form_ids;                    
                 for(var i in s)
@@ -73,9 +76,6 @@ var app = Vue.createApp({
 
                     str+='</span>';
                     $("#div_id_" + e).append(str); 
-
-                    var elmnt = document.getElementById("div_id_" + e);
-                    elmnt.scrollIntoView(); 
 
                 }
             },

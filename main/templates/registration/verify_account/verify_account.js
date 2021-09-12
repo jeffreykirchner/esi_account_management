@@ -26,7 +26,7 @@ var app = Vue.createApp({
             .then(function (response) {                         
                 app.$data.emailVerified = response.data.emailVerified;
                 app.$data.failed = response.data.failed;
-                app.$data.buttonText ='Click to Verify <i class="fas fa-sign-in-alt"></i>';
+                app.$data.buttonText ='Click to Verify <i class="fas fa-sign-in-alt"></i> ';
             })
             .catch(function (error) {
                 console.log(error);                               
