@@ -36,6 +36,7 @@ urlpatterns = [
     path('verify-account/<str:token>/', views.VerifyAccount.as_view(), name='verify-account'),
     path('verify-account-resend/', views.VerifyAccountResend.as_view(), name='verify-account-resend'),
     path('password-reset/', views.PasswordResetView.as_view(), name='password-reset'),
+    path('password-reset-change/<uuid:token>', views.PasswordResetChangeView.as_view(), name='password-reset-change'),
     path('experiments/', views.ExperimentsView.as_view(), name='experiments'),
 
     #api

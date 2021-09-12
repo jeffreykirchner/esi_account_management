@@ -16,7 +16,7 @@ from django.db.models import CharField, F, Value
 
 from main.models import HelpDocs
 from main.models import Profile
-from main.models import Profile
+from main.models import Parameters
 
 from main.forms import CreateAccountForm
 
@@ -47,6 +47,7 @@ class CreateAccountView(TemplateView):
         logout(request)
         
         form = CreateAccountForm()
+        parameters = Parameters.objects.first()
 
         #logger.info(reverse('profile'))
         try:
@@ -61,6 +62,7 @@ class CreateAccountView(TemplateView):
             form_ids.append(i.html_name)
 
         return render(request, self.template_name ,{'form': form,
+                                                    'contact_email':parameters.contact_email, 
                                                     'helpText':helpText,
                                                     'form_ids':form_ids})
 

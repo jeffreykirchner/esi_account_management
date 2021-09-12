@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.contrib.auth import logout
 from django.views.generic import TemplateView
 
-from main.models import parameters
+from main.models import Parameters
 from main.forms import PasswordResetForm
 from main.globals import send_mass_email_service
 
@@ -40,17 +40,20 @@ class PasswordResetView(TemplateView):
 
         form = PasswordResetForm()
 
+        parameters = Parameters.objects.first()
+
         form_ids=[]
         for i in form:
             form_ids.append(i.html_name)
 
         return render(request,self.template_name,{"form":form,
+                                                  "contact_email":parameters.contact_email,
                                                   "form_ids":form_ids})
     
 def send_reset(request, data):
     logger = logging.getLogger(__name__) 
    
-    params = parameters.objects.first()
+    parameters = Parameters.objects.first()
 
     #convert form into dictionary
     form_data_dict = {}             
@@ -69,7 +72,7 @@ def send_reset(request, data):
         #logger.info(user_list)
 
         if user_list.count() != 1:
-            logger.info(f"passwordResetView user not found {username}")
+            logger.info(f"PasswordResetView user not found {username}")
             return JsonResponse({"status":"error", "message":"Account not found."}, safe=False)
         else:
             user = user_list.first()
@@ -79,12 +82,12 @@ def send_reset(request, data):
             user_list = [{"email" : user.email,
                          "variables": [{"name":"first name", "text" : user.first_name},
                                        {"name":"email", "text" : user.email},
-                                       {"name":"reset link", "text" : params.siteURL + reverse('passwordResetChange', args=(user.profile.password_reset_key,))},
-                                       {"name":"contact email", "text" : params.labManager.email}]}]
+                                       {"name":"reset link", "text" : parameters.site_URL + reverse('password-reset-change', args=(user.profile.password_reset_key,))},
+                                       {"name":"contact email", "text" : parameters.contact_email}]}]
 
             memo = f"Password reset for: {user}"
 
-            mail_result = send_mass_email_service(user_list, params.passwordResetTextSubject, params.passwordResetText, memo)
+            mail_result = send_mass_email_service(user_list, parameters.password_reset_text_subject, parameters.password_reset_text, memo)
 
             if mail_result.get("mail_count", -1) > 0:
                 logger.info(f"Reset password for {username}")

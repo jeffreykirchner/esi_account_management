@@ -9,6 +9,8 @@ from django.views.generic import TemplateView
 
 from main.globals import profile_create_send_email
 
+from main.models import Parameters
+
 class VerifyAccountResend(TemplateView):
     '''
     verify account class view
@@ -34,8 +36,10 @@ class VerifyAccountResend(TemplateView):
         '''
         handle get requests
         '''
+        parameters = Parameters.objects.first()
+
         #check for correct token
-        return render(request, self.template_name, { })
+        return render(request, self.template_name, {'contact_email':parameters.contact_email, })
 
 
 #get user status

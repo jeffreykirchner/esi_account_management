@@ -10,6 +10,8 @@ from django.views.generic import TemplateView
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 
+from main.models import Parameters
+
 class VerifyAccount(TemplateView):
     '''
     verify account class view
@@ -38,6 +40,8 @@ class VerifyAccount(TemplateView):
         failed = False
         token = kwargs['token']
 
+        parameters = Parameters.objects.first()
+
         if token != user.profile.email_confirmed or user.profile.email_confirmed == 'no':
             failed=True
 
@@ -47,8 +51,9 @@ class VerifyAccount(TemplateView):
             email_verified = False
 
         return render(request, self.template_name,{'emailVerified':email_verified,
-                                                                  'failed':failed,    
-                                                                  'token':token}) 
+                                                   'contact_email':parameters.contact_email,
+                                                   'failed':failed,    
+                                                   'token':token}) 
 
 #verify user email address
 def verify_email(request, data):

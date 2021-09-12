@@ -17,7 +17,7 @@ var app = Vue.createApp({
             app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
             app.$data.messageText = "";
 
-            axios.post('/accounts/passwordResetChange/{{token}}', {
+            axios.post('{{request.path}}', {
                     action :"change_password",
                     formData : $("#password_reset_change_form").serializeArray(), 
                                                 

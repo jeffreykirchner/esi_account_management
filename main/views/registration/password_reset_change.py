@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.auth import logout
 from django.views.generic import TemplateView
+from django.contrib.auth.hashers import make_password
 
 from main.models import Parameters
 from main.models import Profile
@@ -19,7 +20,7 @@ class PasswordResetChangeView(TemplateView):
     '''
     password reset change class view
     '''
-    template_name = 'registration/password_reset_chage.html'
+    template_name = 'registration/password_reset_change.html'
 
     def post(self, request, *args, **kwargs):
         '''
@@ -44,6 +45,8 @@ class PasswordResetChangeView(TemplateView):
 
         form = PasswordResetChangeForm()
 
+        parameters = Parameters.objects.first()
+
         form_ids=[]
         for i in form:
             form_ids.append(i.html_name)
@@ -53,6 +56,7 @@ class PasswordResetChangeView(TemplateView):
 
         return render(request,self.template_name,{"form":form,
                                                   "token":token,
+                                                  "contact_email":parameters.contact_email,
                                                   "valid_code":False if not valid_code_profile else True,
                                                   "form_ids":form_ids})
     
@@ -60,7 +64,7 @@ def check_valid_code(token):
     logger = logging.getLogger(__name__) 
 
     try:
-        p = profile.objects.filter(password_reset_key=token)
+        p = Profile.objects.filter(password_reset_key=token)
 
         if p.count() != 1:
             logger.warning(f"Password reset failed for {token}, count: {p.count()}")

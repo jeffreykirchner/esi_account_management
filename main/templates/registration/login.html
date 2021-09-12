@@ -19,7 +19,7 @@
     <div class="card">
       
       <div class="card-header">
-        <h5>Log In</h5>
+        Log In
       </div>
 
       <div class="card-body">
@@ -49,11 +49,16 @@
                 </span>
             </div>
         </div>
+        <div class="row mt-1">
+          <div class="col col-sm-8 offset-sm-2">
+              <a href="{% url 'password-reset'%}">Lost Password?</a>
+          </div>
+      </div>
             
       </div>
 
       <div class="card-footer" style="text-align: center;">
-        Need Help? <a href = 'mailto:{{labManager}}'>{{labManager}}</a>
+        Need Help? <a href = 'mailto:{{contact_email}}'>{{contact_email}}</a>
       </div>
 
     </div>

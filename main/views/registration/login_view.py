@@ -39,7 +39,7 @@ class LoginView(TemplateView):
 
         request.session['redirect_path'] = request.GET.get('next','/')
 
-        prm = Parameters.objects.first()
+        parameters = Parameters.objects.first()
 
         form = LoginForm()
 
@@ -47,9 +47,9 @@ class LoginView(TemplateView):
         for i in form:
             form_ids.append(i.html_name)
 
-        return render(request, self.template_name, {"labManager":prm.contact_email,
-                                               "form":form,
-                                               "form_ids":form_ids})
+        return render(request, self.template_name, {"contact_email":parameters.contact_email,
+                                                    "form":form,
+                                                    "form_ids":form_ids})
 
 def login_function(request,data):
     '''

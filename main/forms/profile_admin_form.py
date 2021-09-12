@@ -19,4 +19,4 @@ class ProfileAdminForm(forms.ModelForm):
 
     class Meta:
         model=Profile   
-        exclude=['global_id','user']
+        exclude=['global_id', 'user', 'password_reset_key']

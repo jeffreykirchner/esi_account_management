@@ -8,3 +8,5 @@ from .create_account import *
 from .verify_account import *
 from .verify_account_resend import *
 from .account import *
+from .password_reset import *
+from .password_reset_change import *

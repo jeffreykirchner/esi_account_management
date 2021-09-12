@@ -6,11 +6,7 @@
         <div class = "col">
           Sign up
         </div>        
-        <div class="col" style="text-align: right;">
-          <button type="button" class="btn btn-link" v-on:click="showHelp()" data-placement="bottom" title="Show Help Doc">
-              <i class="far fa-question-circle"></i> 
-          </button>
-        </div>
+        
       </div>
     </div>
 
@@ -55,5 +51,9 @@
         </div>
 
       </div>
-    </div>      
+    </div>     
+    
+    <div class="card-footer" style="text-align: center;">
+        Need Help? <a href = 'mailto:{{contact_email}}'>{{contact_email}}</a>
+    </div>
   </div>
