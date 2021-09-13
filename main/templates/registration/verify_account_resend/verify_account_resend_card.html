@@ -30,8 +30,8 @@
       <div v-if="status === 'fail'">        
         <div class="row">
             <div class = "col" style="text-align: center;">  
-              There was an error sending the email please contact<br>
-              <a v-bind:href= "'mailto:' + adminEmail">[[adminEmail]]</a>     
+              There was an error sending the email please contact:<br>
+              <a href = 'mailto:{{contact_email}}'>{{contact_email}}</a>    
             </div>            
         </div>
       </div>

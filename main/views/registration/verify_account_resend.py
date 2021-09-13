@@ -11,7 +11,9 @@ from main.globals import profile_create_send_email
 
 from main.models import Parameters
 
-class VerifyAccountResend(TemplateView):
+from main.views import HelpDocsMixin
+
+class VerifyAccountResend(HelpDocsMixin, TemplateView):
     '''
     verify account class view
     '''
@@ -39,7 +41,8 @@ class VerifyAccountResend(TemplateView):
         parameters = Parameters.objects.first()
 
         #check for correct token
-        return render(request, self.template_name, {'contact_email':parameters.contact_email, })
+        return render(request, self.template_name, {'contact_email':parameters.contact_email,
+                                                    'help_text' : self.get_help_text(request.path), })
 
 
 #get user status

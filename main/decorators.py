@@ -1,7 +1,10 @@
 
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.conf import settings
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+
+from main.views import VerifyAccountResend
 
 def email_confirmed(function):
     def wrap(request, *args, **kwargs):       
@@ -10,7 +13,8 @@ def email_confirmed(function):
         else:
             #email not verified redirect to verifiction resend          
 
-            return render(request, 'registration/verify_account_resend.html',{})
+            #return render(request, 'registration/verify_account_resend.html',{})
+            return HttpResponseRedirect('/verify-account-resend/')
     return wrap
 
 def in_debug_mode(function):

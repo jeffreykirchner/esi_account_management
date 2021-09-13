@@ -14,7 +14,9 @@ from main.models import Parameters
 from main.forms import PasswordResetForm
 from main.globals import send_mass_email_service
 
-class PasswordResetView(TemplateView):
+from main.views import HelpDocsMixin
+
+class PasswordResetView(HelpDocsMixin, TemplateView):
     '''
     password reset class view
     '''
@@ -47,6 +49,7 @@ class PasswordResetView(TemplateView):
             form_ids.append(i.html_name)
 
         return render(request,self.template_name,{"form":form,
+                                                  'help_text' : self.get_help_text(request.path),
                                                   "contact_email":parameters.contact_email,
                                                   "form_ids":form_ids})
     

@@ -12,8 +12,11 @@ from django.views.generic import TemplateView
 from main.models import Parameters
 from main.forms import LoginForm
 
+from main import views
 
-class LoginView(TemplateView):
+from main.views import HelpDocsMixin
+
+class LoginView(HelpDocsMixin, TemplateView):
     '''
     log in class view
     '''
@@ -48,6 +51,7 @@ class LoginView(TemplateView):
             form_ids.append(i.html_name)
 
         return render(request, self.template_name, {"contact_email":parameters.contact_email,
+                                                    "help_text" : self.get_help_text(request.path),
                                                     "form":form,
                                                     "form_ids":form_ids})
 

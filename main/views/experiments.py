@@ -7,15 +7,15 @@ import json
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from django.db.models import CharField, F, Value
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
 from main.decorators import email_confirmed
-from main.models import help_docs
 
-class ExperimentsView(TemplateView):
+from main.views import HelpDocsMixin
+
+class ExperimentsView(HelpDocsMixin, TemplateView):
     '''
     experiments class view
     '''
@@ -39,13 +39,6 @@ class ExperimentsView(TemplateView):
         handle get requests
         '''
 
-        try:
-            help_text = help_docs.objects.annotate(rp = Value(request.path, output_field=CharField()))\
-                                        .filter(rp__icontains=F('path')).first().text
-
-        except Exception  as e:
-            help_text = "No help doc was found."
-
-        return render(request, self.template_name, {'helpText':help_text,
+        return render(request, self.template_name, {'help_text' : self.get_help_text('/experiments/'),
                                                     'experiments': request.user.profile.experiments.all()})
 

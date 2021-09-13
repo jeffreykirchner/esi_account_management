@@ -4,11 +4,14 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils.translation import ngettext
+from django.db.models.functions import Lower
 
 from main.models import Parameters
 from main.models import Profile
 from main.models import Experiments
+from main.models import HelpDocs
 
+from main.forms import HelpDocForm
 from main.forms import ProfileAdminForm
 from main.forms import ParametersAdminForm
 
@@ -92,4 +95,15 @@ class ExperimentsAdmin(admin.ModelAdmin):
     actions = ['update_shared_status']
 
 admin.site.register(Experiments, ExperimentsAdmin)
+
+class HelpDocAdmin(admin.ModelAdmin):
+            
+      form = HelpDocForm
+
+      ordering = [Lower('title')]
+
+      actions = []
+      list_display = ['title','path']
+
+admin.site.register(HelpDocs, HelpDocAdmin)
 

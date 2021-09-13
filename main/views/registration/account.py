@@ -16,7 +16,9 @@ from main.models import help_docs
 from main.forms import EditAccountForm
 from main.globals import profile_create_send_email
 
-class AccountView(TemplateView):
+from main.views import HelpDocsMixin
+
+class AccountView(HelpDocsMixin, TemplateView):
     '''
     account class view
     '''
@@ -55,19 +57,19 @@ class AccountView(TemplateView):
         form['password1'].label = "Password (Leave blank if no change)"
 
         try:
-            helpText = help_docs.objects.annotate(rp = Value(request.path, output_field=CharField()))\
+            help_text = help_docs.objects.annotate(rp = Value(request.path, output_field=CharField()))\
                                         .filter(rp__icontains=F('path')).first().text
 
         except Exception  as e:
-            helpText = "No help doc was found."
+            help_text = "No help doc was found."
 
         form_ids = []
         for i in form:
             form_ids.append(i.html_name)
 
         return render(request, self.template_name, {'form': form,
-                                                             'form_ids': form_ids,
-                                                             'helpText': helpText})
+                                                    'form_ids': form_ids,
+                                                    'help_text' : self.get_help_text(request.path),})
 def update_profile(user, data):
     '''
     update user's profile

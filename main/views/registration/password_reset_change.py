@@ -16,7 +16,9 @@ from main.models import Profile
 from main.forms import PasswordResetChangeForm
 from main.globals import send_mass_email_service
 
-class PasswordResetChangeView(TemplateView):
+from main.views import HelpDocsMixin
+
+class PasswordResetChangeView(HelpDocsMixin, TemplateView):
     '''
     password reset change class view
     '''
@@ -56,7 +58,8 @@ class PasswordResetChangeView(TemplateView):
 
         return render(request,self.template_name,{"form":form,
                                                   "token":token,
-                                                  "contact_email":parameters.contact_email,
+                                                  "help_text" : self.get_help_text(request.path),
+                                                  "contact_email":'asdf',
                                                   "valid_code":False if not valid_code_profile else True,
                                                   "form_ids":form_ids})
     

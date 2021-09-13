@@ -21,9 +21,9 @@ from main.models import Parameters
 from main.forms import CreateAccountForm
 
 from main.globals import profile_create_send_email
+from main.views import HelpDocsMixin
 
-
-class CreateAccountView(TemplateView):
+class CreateAccountView(HelpDocsMixin, TemplateView):
     '''
     create account class view
     '''
@@ -51,11 +51,11 @@ class CreateAccountView(TemplateView):
 
         #logger.info(reverse('profile'))
         try:
-            helpText = HelpDocs.objects.annotate(rp = Value(request.path, output_field=CharField()))\
+            help_text = HelpDocs.objects.annotate(rp = Value(request.path, output_field=CharField()))\
                                        .filter(rp__icontains = F('path')).first().text
 
         except Exception  as e:   
-            helpText = "No help doc was found."
+            help_text = "No help doc was found."
 
         form_ids=[]
         for i in form:
@@ -63,7 +63,7 @@ class CreateAccountView(TemplateView):
 
         return render(request, self.template_name ,{'form': form,
                                                     'contact_email':parameters.contact_email, 
-                                                    'helpText':helpText,
+                                                    'help_text' : self.get_help_text(request.path),
                                                     'form_ids':form_ids})
 
 def take_create_account(request, data):

@@ -7,7 +7,9 @@ from django.contrib.auth import logout
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-class LogoutView(TemplateView):
+from main.views import HelpDocsMixin
+
+class LogoutView(HelpDocsMixin, TemplateView):
     '''
      log out class view
     '''
@@ -23,6 +25,6 @@ class LogoutView(TemplateView):
 
         logout(request)
 
-        return render(request, self.template_name, {})
+        return render(request, self.template_name, {'help_text' : self.get_help_text(request.path),})
 
     

@@ -12,7 +12,9 @@ from django.utils.decorators import method_decorator
 
 from main.models import Parameters
 
-class VerifyAccount(TemplateView):
+from main.views import HelpDocsMixin
+
+class VerifyAccount(HelpDocsMixin, TemplateView):
     '''
     verify account class view
     '''
@@ -52,7 +54,8 @@ class VerifyAccount(TemplateView):
 
         return render(request, self.template_name,{'emailVerified':email_verified,
                                                    'contact_email':parameters.contact_email,
-                                                   'failed':failed,    
+                                                   'failed':failed, 
+                                                   'help_text' : self.get_help_text(request.path),   
                                                    'token':token}) 
 
 #verify user email address

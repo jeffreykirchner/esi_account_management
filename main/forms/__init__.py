@@ -8,3 +8,4 @@ from .site_parameters_form import *
 from .edit_account_form import *
 from .password_reset_change_form import *
 from .password_reset_form import *
+from .help_doc_form import *

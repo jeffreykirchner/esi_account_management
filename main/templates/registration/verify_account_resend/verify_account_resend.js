@@ -32,7 +32,7 @@ var app = Vue.createApp({
         }, 
 
         getUser(){
-            axios.post('{{request.path}}', {                            
+            axios.post("{%url 'verify-account-resend'%}", {                            
                 action:"getUser",                                                            
             })
             .then(function (response) {                         
