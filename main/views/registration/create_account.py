@@ -72,7 +72,7 @@ def take_create_account(request, data):
     '''
 
     logger = logging.getLogger(__name__) 
-    logger.info("Create Accunt")
+    logger.info(f"Create Account")
 
     form_data_dict = {}             
 
@@ -88,11 +88,11 @@ def take_create_account(request, data):
     if f.is_valid():
         
         user = create_acocunt(f.cleaned_data['email'].strip().lower(),
-                            f.cleaned_data['email'].strip().lower(),
-                            f.cleaned_data['password1'],
-                            f.cleaned_data['first_name'].strip().capitalize(),
-                            f.cleaned_data['last_name'].strip().capitalize(),
-                            f.cleaned_data['organization'].strip(),)
+                             f.cleaned_data['email'].strip().lower(),
+                             f.cleaned_data['password1'],
+                             f.cleaned_data['first_name'].strip().capitalize(),
+                             f.cleaned_data['last_name'].strip().capitalize(),
+                             f.cleaned_data['organization'].strip(),)
 
         #send email verification
         try:
