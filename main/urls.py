@@ -40,7 +40,7 @@ urlpatterns = [
     path('experiments/', views.ExperimentsView.as_view(), name='experiments'),
 
     #api
-    path('get-auth/<str:app_name>/', views.GetAuthView.as_view()),
+    path('get-auth/', views.GetAuthView.as_view()),
 ]
 
 urlpatterns += [

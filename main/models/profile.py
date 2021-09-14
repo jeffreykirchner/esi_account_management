@@ -31,6 +31,18 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'Profile'
         verbose_name_plural = 'Profiles'
+    
+    def json(self):
+        '''
+        return json object of model
+        '''
+
+        return {'first_name' : self.user.first_name,
+                'last_name' : self.user.last_name,
+                'email' : self.user.email,
+                'organization' : self.organization,
+                'global_id' : self.global_id,
+                }
 
 #delete associated user model when profile is deleted
 @receiver(post_delete, sender=Profile)

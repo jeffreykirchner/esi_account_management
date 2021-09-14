@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.utils.translation import ngettext
 from django.db.models.functions import Lower
 
+from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
+
 from main.models import Parameters
 from main.models import Profile
 from main.models import Experiments
@@ -49,7 +51,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 admin.site.register(Profile, ProfileAdmin)
 
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(DjangoUserAdmin):
 
     ordering = ['-date_joined']
     search_fields = ['last_name','first_name','email']
