@@ -15,7 +15,6 @@ STATIC_ROOT = 'main/static/'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split()
 
 # Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 hostname = os.environ['DBHOST']
 
