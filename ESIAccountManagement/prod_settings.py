@@ -16,16 +16,14 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split()
 
 # Database
 
-hostname = os.environ['DBHOST']
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ['DBNAME'],
-        'HOST': hostname + ".postgres.database.azure.com",
+        'HOST': os.environ['DBHOST'],
         'USER': os.environ['DBUSER'],
         'PASSWORD': os.environ['DBPASS'],
-        'OPTIONS': {'sslmode': 'require'},
+        'OPTIONS': {'sslmode': 'prefer'},
     },
 }
 
