@@ -68,7 +68,7 @@
         
 
         
-        <nav class="navbar navbar-expand-lg navbar-light bg-light p-1 d-print-none">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light p-1">
             <div class="container-fluid">
                 <a class="navbar-brand">
                     ESI
@@ -82,41 +82,41 @@
                     
                     <ul class="navbar-nav me-auto">                       
                         {% if user.is_authenticated %}
-                        <li class="nav-item px-2">
-                            <a href="{%url 'experiments'%}"  data-placement="bottom" title="Experiments list">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{%url 'experiments'%}"  data-placement="bottom" title="Experiments list">
                                 Experiments <i class="fas fa-flask"></i> 
                             </a>
                         </li>
 
-                        <li class="nav-item px-2">
-                            <a href="{% url 'account'%}"  data-placement="bottom" title="Update Account">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'account'%}"  data-placement="bottom" title="Update Account">
                                 Account <i class="far fa-user"></i> 
                             </a>
                         </li>
 
-                        <li class="nav-item px-2">
-                            <a href="{% url 'logout'%}"> 
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'logout'%}"> 
                                 Log Out <i class="fas fa-sign-out-alt fa-fw"></i>
                             </a>                                
                         </li>
 
                         {%if user.is_superuser%}
-                            <li class="nav-item px-2">
-                                <a href="{% url 'admin:index' %}"  data-placement="bottom" title="Admin Site">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'admin:index' %}"  data-placement="bottom" title="Admin Site">
                                     Admin <i class="fas fa-tools"></i> 
                                 </a>
                             </li>
                         {%endif%}
                         
                         {%else%}
-                            <li class="nav-item px-2">
-                                <a href="{% url 'login'%}"> 
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'login'%}"> 
                                     Log In <i class="fas fa-sign-in-alt"></i>
                                 </a>                                
                             </li>
 
-                            <li class="nav-item px-2">
-                                <a href="{% url 'create-account'%}"> 
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'create-account'%}"> 
                                     Create Account <i class="fas fa-user-plus"></i>
                                 </a>                                
                             </li>
