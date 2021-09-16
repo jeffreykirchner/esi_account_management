@@ -124,13 +124,20 @@
                         {%endif%}
                     </ul>
                     
-                    
                     <div class="d-flex">
-                        <button type="button" class="btn btn-link" id="helpButton" style="text-align: right;" data-toggle="tooltip" data-placement="bottom" title="Show Help Doc">
+                        {{user.last_name}}, {{user.first_name}}
+                    </div>
+                    <div class="d-flex">                        
+                        <button type="button"
+                                class="btn btn-link"
+                                id="helpButton"
+                                style="text-align: right;"
+                                data-toggle="tooltip"
+                                data-placement="bottom"
+                                title="Show Help Doc">
                             <i class="far fa-question-circle"></i> 
                         </button>
-                    </div>            
-
+                    </div>           
                 </div>
             </div>
         </nav>
