@@ -12,10 +12,12 @@ from main.models import Parameters
 from main.models import Profile
 from main.models import Experiments
 from main.models import HelpDocs
+from main.models import FrontPageNotice
 
 from main.forms import HelpDocForm
 from main.forms import ProfileAdminForm
 from main.forms import ParametersAdminForm
+from main.forms import FrontPageNoticeForm
 
 
 # Register your models here.
@@ -109,3 +111,13 @@ class HelpDocAdmin(admin.ModelAdmin):
 
 admin.site.register(HelpDocs, HelpDocAdmin)
 
+class FrontPageNoticeAdmin(admin.ModelAdmin):
+            
+      form = FrontPageNoticeForm
+
+      ordering = [Lower('subject_text')]
+
+      actions = []
+      list_display = ['subject_text', 'enabled']
+
+admin.site.register(FrontPageNotice, FrontPageNoticeAdmin)
