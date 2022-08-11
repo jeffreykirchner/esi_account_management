@@ -45,7 +45,7 @@ class TestAPI(TestCase):
         logger = logging.getLogger(__name__)
 
         request = RequestFactory().get('/create-account/')
-        middleware = SessionMiddleware()
+        middleware = SessionMiddleware(get_response=request)
         middleware.process_request(request)
         request.session.save()
         request.user = AnonymousUser()

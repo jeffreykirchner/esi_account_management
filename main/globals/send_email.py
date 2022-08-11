@@ -10,6 +10,7 @@ import sys
 
 from django.utils.crypto import get_random_string
 from django.conf import settings
+from django.utils.html import strip_tags
 
 from main.models import Parameters
 from main.models import Profile
@@ -100,7 +101,8 @@ def send_mass_email_service(user_list, message_subject, message_text, memo):
 
     data = {"user_list" : user_list,
             "message_subject" : message_subject,
-            "message_text" : message_text,
+            "message_text" : strip_tags(message_text).replace("&nbsp;", " "),
+            "message_text_html" : message_text,
             "memo" : memo}
     
     logger.info(f"ESI mass email API: users: {user_list}, message_subject : {message_subject}, message_text : {message_text}")
