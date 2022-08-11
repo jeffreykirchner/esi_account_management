@@ -16,7 +16,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:12.5
+        image: postgres:13.7
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -32,7 +32,7 @@ jobs:
     - name: Set up Python version
       uses: actions/setup-python@v1
       with:
-        python-version: '3.8'
+        python-version: '3.9'
 
     - name: Create and start virtual environment
       run: |
@@ -46,6 +46,7 @@ jobs:
     - name: Run tests
       env:
         ALLOWED_HOSTS: localhost 127.0.0.1
+        CSRF_TRUSTED_ORIGINS : http://localhost
         DBHOST: localhost
         DBNAME: github_actions
         DBPASS: postgres

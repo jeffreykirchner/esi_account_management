@@ -3,6 +3,7 @@ site wide parameters
 '''
 #import logging
 #import traceback
+from tinymce.models import HTMLField
 
 from django.db import models
 
@@ -15,10 +16,10 @@ class Parameters(models.Model):
     site_URL = models.CharField(max_length=200, default="https://www.google.com")          #site URL used for display in emails
 
     password_reset_text_subject = models.CharField(max_length=1000, default="")             #email subject text when password reset
-    password_reset_text = models.CharField(max_length=10000, default="")                    #email text sent when password reset
+    password_reset_text = HTMLField(default="")                                             #email text sent when password reset
 
     email_verification_text_subject = models.CharField(max_length=1000, default="")         #email subject sent to user to verify their email address
-    email_verification_text = models.CharField(max_length=10000, default="")                #email text sent to user to verify their email address
+    email_verification_text = HTMLField(default="")                                         #email text sent to user to verify their email address
 
     timestamp = models.DateTimeField(auto_now_add=True)
     updated= models.DateTimeField(auto_now=True)
