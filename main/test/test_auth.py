@@ -15,6 +15,7 @@ from django.contrib.auth.hashers import check_password
 
 from django.test import TestCase
 from django.test import RequestFactory
+from django.test import Client
 
 import main
 
@@ -35,7 +36,7 @@ class TestAuth(TestCase):
         logger = logging.getLogger(__name__)
 
         request = RequestFactory().get('/create-account/')
-        middleware = SessionMiddleware()
+        middleware = SessionMiddleware(get_response=request)
         middleware.process_request(request)
         request.session.save()
         request.user = AnonymousUser()
@@ -78,13 +79,16 @@ class TestAuth(TestCase):
         '''
         logger = logging.getLogger(__name__)
 
-        request = RequestFactory().get('/create-account/')
-        middleware = SessionMiddleware()
+        self.factory = RequestFactory()
+        request = self.factory.get('/create-account/')
+        middleware = SessionMiddleware(get_response=request)
         middleware.process_request(request)
         request.session.save()
         request.user = AnonymousUser()
 
         data = {'action': 'create', 'formData': [{'name': 'first_name', 'value': 'John'}, {'name': 'last_name', 'value': 'Smith'}, {'name': 'email', 'value': 'abc@123.edu'}, {'name': 'organization', 'value': 'College Tech'}, {'name': 'password1', 'value': 'qwerty112233'}, {'name': 'password2', 'value': 'qwerty112233'}]}
+        # c = Client()
+        # response = c.post('/create-account/', data)
 
         result = json.loads(take_create_account(request, data).content.decode("UTF-8"))
         #logger.info(result)
