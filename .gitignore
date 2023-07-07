@@ -3,3 +3,4 @@ ESIAccountManagementEnv
 .vscode/*
 *.pyc
 local_settings.py
+db_dumps/*
