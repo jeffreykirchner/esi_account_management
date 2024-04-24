@@ -46,7 +46,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ESIAccountManagement.urls'
+ROOT_URLCONF = '_esi_account_management.urls'
 ADMIN_SITE_HEADER = 'ESI Administration'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -63,13 +63,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'ESIAccountManagement.context_processors.get_debug',
+                '_esi_account_management.context_processors.get_debug',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'ESIAccountManagement.wsgi.application'
+WSGI_APPLICATION = '_esi_account_management.wsgi.application'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
