@@ -14,7 +14,7 @@ urlpatterns = [
     path('', views.ExperimentsView.as_view()),
 
     re_path(r'^admin/login/$', views.LoginView.as_view()),
-    re_path(r'^admin/logout/', views.LogoutView.as_view()),
+    
     path('accounts/login/', views.LoginView.as_view(), name='login'),
     path('accounts/logout/', views.LogoutView.as_view(), name='logout'),
 
