@@ -1,5 +1,5 @@
 """
-ASGI config for ESIAccountManagement project.
+ASGI config for _esi_account_management project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ESIAccountManagement.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', '_esi_account_management.settings')
 
 application = get_asgi_application()
