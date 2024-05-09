@@ -13,7 +13,7 @@ var app = Vue.createApp({
     }},
 
     methods:{
-        change_password:function(){
+        change_password:function change_password(){
             app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
             app.$data.messageText = "";
 
@@ -50,19 +50,20 @@ var app = Vue.createApp({
                 });                        
             },
 
-        clearMainFormErrors:function(){
+        //clear form errors
+        clearMainFormErrors:function clearMainFormErrors(){
 
-                s = app.$data.form_ids;                    
-                for(var i in s)
-                {
-                    $("#id_" + s[i]).attr("class","form-control");
-                    $("#id_errors_" + s[i]).remove();
-                }
+            s = app.$data.form_ids;                    
+            for(var i in s)
+            {
+                $("#id_" + s[i]).attr("class","form-control");
+                $("#id_errors_" + s[i]).remove();
+            }
 
-            },
+        },
         
         //display form errors
-        displayErrors:function(errors){
+        displayErrors:function displayErrors(errors){
             for(var e in errors)
             {
                 $("#id_" + e).attr("class","form-control is-invalid")

@@ -1,92 +1,92 @@
 
 
-      axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-      axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
 
-      var app = Vue.createApp({
-      
-          delimiters: ["[[", "]]"],
+var app = Vue.createApp({
 
-          data() { return {
-              loginButtonText : 'Submit <i class="fas fa-sign-in-alt"></i>',
-              loginErrorText : "",
-              form_ids : {{form_ids|safe}},
-              }                          
-          },
+    delimiters: ["[[", "]]"],
 
-          methods:{
-              //get current, last or next month
+    data() { return {
+        loginButtonText : 'Submit <i class="fas fa-sign-in-alt"></i>',
+        loginErrorText : "",
+        form_ids : {{form_ids|safe}},
+        }                          
+    },
 
-              login:function(){
-                  app.$data.loginButtonText = '<i class="fas fa-spinner fa-spin"></i>';
-                  app.$data.loginErrorText = "";
+    methods:{
+        //get current, last or next month
 
-                  axios.post('/accounts/login/', {
-                          action :"login",
-                          formData : $("#login_form").serializeArray(), 
-                                                      
-                      })
-                      .then(function (response) {     
-                          
-                        status=response.data.status;                               
+        login:function login(){
+            app.$data.loginButtonText = '<i class="fas fa-spinner fa-spin"></i>';
+            app.$data.loginErrorText = "";
 
-                        app.clearMainFormErrors();
+            axios.post('/accounts/login/', {
+                    action :"login",
+                    formData : $("#login_form").serializeArray(), 
+                                                
+                })
+                .then(function (response) {     
+                    
+                status=response.data.status;                               
 
-                        if(status == "validation")
-                        {              
-                          //form validation error           
-                          app.displayErrors(response.data.errors);
-                        }
-                        else if(status == "error")
-                        {
-                          app.$data.loginErrorText = "Username or Password is incorrect."
-                        }
-                        else
-                        {
-                          window.location = response.data.redirect_path;
-                        }
+                app.clearMainFormErrors();
 
-                        app.$data.loginButtonText = 'Submit <i class="fas fa-sign-in-alt"></i>';
+                if(status == "validation")
+                {              
+                    //form validation error           
+                    app.displayErrors(response.data.errors);
+                }
+                else if(status == "error")
+                {
+                    app.$data.loginErrorText = "Username or Password is incorrect."
+                }
+                else
+                {
+                    window.location = response.data.redirect_path;
+                }
 
-                      })
-                      .catch(function (error) {
-                          console.log(error);                            
-                      });                        
-                  },
+                app.$data.loginButtonText = 'Submit <i class="fas fa-sign-in-alt"></i>';
 
-                  clearMainFormErrors:function(){
+                })
+                .catch(function (error) {
+                    console.log(error);                            
+                });                        
+        },
 
-                        s = app.$data.form_ids;                    
-                        for(var i in s)
-                        {
-                            $("#id_" + s[i]).attr("class","form-control");
-                            $("#id_errors_" + s[i]).remove();
-                        }
+        clearMainFormErrors:function clearMainFormErrors(){
 
-                    },
-              
-                //display form errors
-                displayErrors:function(errors){
-                      for(var e in errors)
-                      {
-                          $("#id_" + e).attr("class","form-control is-invalid")
-                          var str='<span id=id_errors_'+ e +' class="text-danger">';
-                          
-                          for(var i in errors[e])
-                          {
-                              str +=errors[e][i] + '<br>';
-                          }
+            s = app.$data.form_ids;                    
+            for(var i in s)
+            {
+                $("#id_" + s[i]).attr("class","form-control");
+                $("#id_errors_" + s[i]).remove();
+            }
 
-                          str+='</span>';
-                          $("#div_id_" + e).append(str); 
+        },
+        
+        //display form errors
+        displayErrors:function displayErrors(errors){
+                for(var e in errors)
+                {
+                    $("#id_" + e).attr("class","form-control is-invalid")
+                    var str='<span id=id_errors_'+ e +' class="text-danger">';
+                    
+                    for(var i in errors[e])
+                    {
+                        str +=errors[e][i] + '<br>';
+                    }
 
-                      }
-                  },
+                    str+='</span>';
+                    $("#div_id_" + e).append(str); 
 
-              
-          },            
+                }
+            },
 
-          mounted() {
-                                      
-          },
-      }).mount('#app');
+        
+    },            
+
+    mounted() {
+                                
+    },
+}).mount('#app');

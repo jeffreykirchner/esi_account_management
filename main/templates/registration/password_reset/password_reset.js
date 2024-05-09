@@ -14,7 +14,7 @@ var app = Vue.createApp({
     methods:{
         //get current, last or next month
 
-        send_reset(){
+        send_reset: function send_reset(){
             app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
             app.$data.messageText = "";
 
@@ -49,36 +49,36 @@ var app = Vue.createApp({
                 .catch(function (error) {
                     console.log(error);                            
                 });                        
-            },
+        },
 
-        clearMainFormErrors(){
+        clearMainFormErrors: function clearMainFormErrors(){
 
-                s = app.$data.form_ids;                    
-                for(var i in s)
-                {
-                    $("#id_" + s[i]).attr("class","form-control");
-                    $("#id_errors_" + s[i]).remove();
-                }
+            s = app.$data.form_ids;                    
+            for(var i in s)
+            {
+                $("#id_" + s[i]).attr("class","form-control");
+                $("#id_errors_" + s[i]).remove();
+            }
 
-            },
+        },
         
         //display form errors
-        displayErrors(errors){
-                for(var e in errors)
+        displayErrors: function displayErrors(errors){
+            for(var e in errors)
+            {
+                $("#id_" + e).attr("class","form-control is-invalid")
+                var str='<span id=id_errors_'+ e +' class="text-danger">';
+                
+                for(var i in errors[e])
                 {
-                    $("#id_" + e).attr("class","form-control is-invalid")
-                    var str='<span id=id_errors_'+ e +' class="text-danger">';
-                    
-                    for(var i in errors[e])
-                    {
-                        str +=errors[e][i] + '<br>';
-                    }
-
-                    str+='</span>';
-                    $("#div_id_" + e).append(str); 
-
+                    str +=errors[e][i] + '<br>';
                 }
-            },
+
+                str+='</span>';
+                $("#div_id_" + e).append(str); 
+
+            }
+        },
 
         
     },            

@@ -15,7 +15,7 @@ var app = Vue.createApp({
 
     methods:{
         //get list of users based on search
-        sendVerificationEmail(){
+        sendVerificationEmail: function sendVerificationEmail(){
             
             app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
 
@@ -31,7 +31,7 @@ var app = Vue.createApp({
             }); 
         }, 
 
-        getUser(){
+        getUser: function getUser(){
             axios.post("{%url 'verify-account-resend'%}", {                            
                 action:"getUser",                                                            
             })

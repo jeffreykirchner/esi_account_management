@@ -16,7 +16,7 @@ var app = Vue.createApp({
 
     methods:{
         //get list of users based on search
-        verifyEmail(){
+        verifyEmail: function verifyEmail(){
             
             app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
 
