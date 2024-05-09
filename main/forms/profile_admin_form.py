@@ -24,6 +24,7 @@ class ProfileAdminForm(forms.ModelForm):
                                             required=False)
 
     mfa_hash = forms.CharField(label='Multi-factor Hash',
+                               required=False,
                                widget=forms.TextInput(attrs={"size":"125"}))
 
     disabled = forms.BooleanField(label='Disabled',
