@@ -1,10 +1,13 @@
 import logging
+import datetime
 
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils.translation import ngettext
 from django.db.models.functions import Lower
+from django.db.backends.postgresql.psycopg_any import DateTimeTZRange
+from django.utils import timezone
 
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 
@@ -13,6 +16,7 @@ from main.models import Profile
 from main.models import Experiments
 from main.models import HelpDocs
 from main.models import FrontPageNotice
+from main.models import ProfileLoginAttempt
 
 from main.forms import HelpDocForm
 from main.forms import ProfileAdminForm
@@ -39,15 +43,38 @@ class ParametersAdmin(admin.ModelAdmin):
 
 admin.site.register(Parameters, ParametersAdmin)
 
+#profile login attempt inline
+class ProfileLoginAttemptInline(admin.TabularInline):
+      '''
+      profile login attempt inline
+      '''
+      def get_queryset(self, request):
+            qs = super().get_queryset(request)
+            
+            return qs.filter(timestamp__contained_by=DateTimeTZRange(timezone.now() - datetime.timedelta(days=30), timezone.now()))
+      
+      def has_add_permission(self, request, obj=None):
+            return False
+
+      def has_change_permission(self, request, obj=None):
+            return False
+
+      extra = 0  
+      model = ProfileLoginAttempt
+      can_delete = True
+      fields=('success','note')
+      readonly_fields = ('timestamp',)
+
 class ProfileAdmin(admin.ModelAdmin):
     '''
     People model admin
     '''
     form = ProfileAdminForm
 
-    fields = ('user', 'global_id', 'organization', 'email_confirmed', 'experiments')
+    
     readonly_fields = ['user', 'global_id']
     list_display = ['__str__', 'organization']
+    inlines = [ProfileLoginAttemptInline]
 
     actions = []
 

@@ -15,7 +15,20 @@ class ProfileAdminForm(forms.ModelForm):
     experiments = forms.ModelMultipleChoiceField(label="Grant Access",
                                                  required=False,
                                                  queryset=Experiments.objects.all().order_by("name"),
-                                                 widget = forms.CheckboxSelectMultiple(attrs={}))                                                                                                                                                                                                                                                           
+                                                 widget = forms.CheckboxSelectMultiple(attrs={}))   
+
+    mfa_required = forms.BooleanField(label='Multi-factor Required',
+                                      required=False)
+
+    mfa_setup_complete = forms.BooleanField(label='Multi-factor Setup Complete',
+                                            required=False)
+
+    mfa_hash = forms.CharField(label='Multi-factor Hash',
+                               widget=forms.TextInput(attrs={"size":"125"}))
+
+    disabled = forms.BooleanField(label='Disabled',
+                                  required=False)
+
 
     class Meta:
         model=Profile   
