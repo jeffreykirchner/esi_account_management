@@ -22,6 +22,12 @@ class Profile(models.Model):
 
     password_reset_key = models.UUIDField(verbose_name='Password Reset Key', null=True, blank=True)                     #log in key used to reset subject password
 
+    mfa_hash = models.CharField(verbose_name="Multi-factor Hash", max_length = 50, null=True, blank=True)             #hash for multi-factor authentication
+    mfa_required = models.BooleanField(verbose_name="Multi-factor Required", default=False)                           #true if multi-factor authentication is required
+    mfa_setup_complete = models.BooleanField(verbose_name="Multi-factor Setup Complete", default=False)               #true if multi-factor authentication is setup
+
+    disabled = models.BooleanField(verbose_name="Disabled", default=False)                                            #if true, user is disabled and cannot login
+
     timestamp = models.DateTimeField(auto_now_add= True)
     updated= models.DateTimeField(auto_now= True)
 
