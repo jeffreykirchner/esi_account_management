@@ -38,7 +38,7 @@ def send_mass_email_verify(profile_list, request):
         user_list.append({"email" : profile.user.email,
                           "variables": [{"name" : "activation link", "text" : f'{params.siteURL}/verify-account/{profile.email_confirmed}/'},
                                         {"name" : "first name", "text" : profile.user.first_name},
-                                        {"name" : "contact email", "text" : params.labManager.email}]})
+                                        {"name" : "contact email", "text" : params.contact_email}]})
             
     memo = 'Bulk account deactivation'
 
