@@ -43,7 +43,9 @@ class ExperimentsView(HelpDocsMixin, TemplateView):
 
         parameters = Parameters.objects.first()
 
+        user_experiments = request.user.profile.experiments.filter(disabled=False).order_by('name')
+
         return render(request, self.template_name, {'help_text' : self.get_help_text('/experiments/'),
                                                     'contact_email':parameters.contact_email,
-                                                    'experiments': request.user.profile.experiments.all()})
+                                                    'experiments': user_experiments})
 
