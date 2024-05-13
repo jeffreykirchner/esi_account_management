@@ -13,6 +13,8 @@ from django.views.generic import TemplateView
 
 from main.decorators import email_confirmed
 
+from main.models import Parameters
+
 from main.views import HelpDocsMixin
 
 class ExperimentsView(HelpDocsMixin, TemplateView):
@@ -39,6 +41,9 @@ class ExperimentsView(HelpDocsMixin, TemplateView):
         handle get requests
         '''
 
+        parameters = Parameters.objects.first()
+
         return render(request, self.template_name, {'help_text' : self.get_help_text('/experiments/'),
+                                                    'contact_email':parameters.contact_email,
                                                     'experiments': request.user.profile.experiments.all()})
 
