@@ -41,7 +41,7 @@ class GetAuthView(APIView):
 
         logger.info(f"Get Auth: {app_name}, {request.user}")
 
-        experiments = Experiments.objects.filter(name=str(app_name))
+        experiments = Experiments.objects.filter(name=str(app_name), disabled=False)
         user = authenticate(request, username=username.lower(), password=password)
 
         logger.info(f"Get Auth experiments found: {experiments}")

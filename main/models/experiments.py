@@ -10,6 +10,7 @@ class Experiments(models.Model):
     name =  models.CharField(max_length = 1000, default = "*** New Experiment **", unique=True)            #name of the experiment
     url =  models.URLField(max_length = 200, default = "https://www.google.com")              #URL of the experiment
     available_to_all = models.BooleanField(default=False)                                     #allow all users access 
+    disabled = models.BooleanField(default=False)                                             #disable the experiment
     
     timestamp = models.DateTimeField(auto_now_add= True)
     updated= models.DateTimeField(auto_now= True)

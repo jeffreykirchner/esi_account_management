@@ -71,7 +71,8 @@ class ProfileAdmin(admin.ModelAdmin):
     '''
     form = ProfileAdminForm
 
-    
+    ordering = ['user__last_name', 'user__first_name']
+    search_fields = ['user__last_name', 'user__first_name', 'user__email']
     readonly_fields = ['user', 'global_id']
     list_display = ['__str__', 'organization']
     inlines = [ProfileLoginAttemptInline]
