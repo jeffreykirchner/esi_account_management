@@ -125,6 +125,7 @@ class ExperimentsAdmin(admin.ModelAdmin):
     update_shared_status.short_description = "Set accounts to shared status of selected experiments."
 
     actions = ['update_shared_status']
+    ordering = ['name']
 
 admin.site.register(Experiments, ExperimentsAdmin)
 
