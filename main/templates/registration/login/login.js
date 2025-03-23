@@ -58,7 +58,7 @@ var app = Vue.createApp({
                         app.show_two_factor = true;
         
                         Vue.nextTick(() => {
-                        document.getElementById("idtwofactorcode").focus();
+                            document.getElementById("idtwofactorcode").focus();
                         });
                       
                     }

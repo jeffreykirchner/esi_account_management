@@ -100,7 +100,7 @@ def login_function(request,data):
                 logger.error(f"Login user {username} inactive account.")                
                 return JsonResponse({"status":"error", "message":"Your account is not active. Contact us for more information."}, safe=False)
             
-            #if user can use paypal require two factor code
+            #check if two factor code required
             if user.profile.mfa_required and two_factor == "":
                 if not user.profile.mfa_setup_complete:
                     

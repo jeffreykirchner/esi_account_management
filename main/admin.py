@@ -54,10 +54,10 @@ class ProfileLoginAttemptInline(admin.TabularInline):
             return qs.filter(timestamp__contained_by=DateTimeTZRange(timezone.now() - datetime.timedelta(days=30), timezone.now()))
       
       def has_add_permission(self, request, obj=None):
-            return False
+            return True
 
       def has_change_permission(self, request, obj=None):
-            return False
+            return True
 
       extra = 0  
       model = ProfileLoginAttempt
