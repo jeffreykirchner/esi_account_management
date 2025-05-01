@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - esi-auth
+name: Build and deploy Python app to Azure Web App
 
 on:
   push:
@@ -57,6 +57,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'esi-auth'
+          app-name: '${{secrets.AZURE_APP_NAME}}'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F186B6DC0284489AACFD7A498FD246C1 }}
