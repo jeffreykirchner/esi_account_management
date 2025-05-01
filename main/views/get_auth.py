@@ -35,9 +35,15 @@ class GetAuthView(APIView):
         profile = {}
         return_response_status = response_status.HTTP_200_OK
 
-        app_name = request.data['app_name']
-        username = request.data['username']
-        password = request.data['password']
+        try:
+            app_name = request.data['app_name']
+            username = request.data['username']
+            password = request.data['password']
+        except KeyError as e:
+            logger.error(f"Get Auth KeyError: {e}")
+            return Response({"status" : "fail",
+                             "message" : "missing required parameters",
+                             "profile" : {}}, status=response_status.HTTP_400_BAD_REQUEST)
 
         logger.info(f"Get Auth: {app_name}, {request.user}")
 

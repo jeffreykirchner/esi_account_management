@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - esi-auth(dev)
+name: Build and deploy Python app to Azure Web App
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.7
+        image: postgres:16.8
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -32,7 +32,7 @@ jobs:
     - name: Set up Python version
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12'
+        python-version: '3.13'
 
     - name: Create and start virtual environment
       run: |
@@ -82,6 +82,6 @@ jobs:
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'esi-auth'
+          app-name: '${{secrets.AZURE_APP_NAME}}'
           slot-name: 'dev'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_51f7741254e2499984fb558784718e42 }}
