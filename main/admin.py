@@ -23,6 +23,7 @@ from main.forms import ProfileAdminForm
 from main.forms import ParametersAdminForm
 from main.forms import FrontPageNoticeForm
 
+admin.site.site_header = 'ESI Account Management'
 
 # Register your models here.
 
