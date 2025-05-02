@@ -8,6 +8,7 @@ from main.models.experiments import Experiments
 from django.contrib.auth import logout
 from django.contrib.auth import login
 from django.contrib.auth import get_user_model
+from django.utils.html import strip_tags
 
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -87,12 +88,12 @@ def take_create_account(request, data):
 
     if f.is_valid():
         
-        user = create_acocunt(f.cleaned_data['email'].strip().lower(),
-                             f.cleaned_data['email'].strip().lower(),
-                             f.cleaned_data['password1'],
-                             f.cleaned_data['first_name'].strip().capitalize(),
-                             f.cleaned_data['last_name'].strip().capitalize(),
-                             f.cleaned_data['organization'].strip(),)
+        user = create_acocunt(strip_tags(f.cleaned_data['email'].strip().lower()),
+                              strip_tags(f.cleaned_data['email'].strip().lower()),
+                              f.cleaned_data['password1'],
+                              strip_tags(f.cleaned_data['first_name'].strip().capitalize()),
+                              strip_tags(f.cleaned_data['last_name'].strip().capitalize()),
+                              strip_tags(f.cleaned_data['organization'].strip()),)
 
         #send email verification
         try:

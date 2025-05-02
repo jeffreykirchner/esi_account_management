@@ -9,7 +9,7 @@ echo "Restore database? (y/n)"
 read restore
 if [ "$restore" = "y" ]; then
     echo "Restore database: enter db password"
-    pg_restore -v --no-owner --role=dbowner --host=localhost --port=5432 --username=dbadmin --dbname=esiaccountmanagment database_dumps/multi_user_socket_template.sql
+    pg_restore -v --no-owner --role=dbowner --host=localhost --port=5432 --username=dbadmin --dbname=esiaccountmanagment database_dumps/esi_auth.sql
 else
     python manage.py migrate
     echo "Create Super User:"

@@ -11,6 +11,7 @@ from django.db.models import CharField, F, Value
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
+from django.utils.html import strip_tags
 
 from main.models import help_docs
 from main.forms import EditAccountForm
@@ -92,12 +93,12 @@ def update_profile(user, data):
         if user.email != form.cleaned_data['email'].lower():
             email_verification_required = True
 
-        user.first_name = form.cleaned_data['first_name'].strip().capitalize()
-        user.last_name = form.cleaned_data['last_name'].strip().capitalize()
+        user.first_name = strip_tags(form.cleaned_data['first_name'].strip().capitalize())
+        user.last_name = strip_tags(form.cleaned_data['last_name'].strip().capitalize())
         user.email = form.cleaned_data['email'].strip().lower()
         user.username = user.email
 
-        user.profile.organization = form.cleaned_data['organization'].strip()
+        user.profile.organization = strip_tags(form.cleaned_data['organization'].strip())
 
         if form.cleaned_data['password1']:
             if form.cleaned_data['password1'] != "":
