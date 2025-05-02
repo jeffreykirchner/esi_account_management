@@ -19,6 +19,30 @@ class CreateAccountForm(forms.Form):
     password1 = forms.CharField(label='Password',widget=forms.PasswordInput())
     password2 = forms.CharField(label='Repeat Password',widget=forms.PasswordInput())
 
+    def clean_first_name(self):
+        #prevent url injection
+        first_name = self.cleaned_data['first_name'].strip()
+        if "." in first_name or first_name.startswith('http://') or first_name.startswith('https://'):
+            raise forms.ValidationError('URLs are not allowed.')
+        
+        return first_name
+    
+    def clean_last_name(self):
+        #prevent url injection
+        last_name = self.cleaned_data['last_name'].strip()
+        if "." in last_name or last_name.startswith('http://') or last_name.startswith('https://'):
+            raise forms.ValidationError('URLs are not allowed.')
+        
+        return last_name
+    
+    def clean_organization(self):
+        #prevent url injection
+        organization = self.cleaned_data['organization'].strip()
+        if "." in organization or organization.startswith('http://') or organization.startswith('https://'):
+            raise forms.ValidationError('URLs are not allowed.')
+        
+        return organization
+
     #check that passwords match
     def clean_password1(self):    
         logger = logging.getLogger(__name__) 

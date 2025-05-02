@@ -3,4 +3,4 @@ _esi_account_managementEnv
 .vscode/*
 *.pyc
 local_settings.py
-db_dumps/*
+database_dumps/*
