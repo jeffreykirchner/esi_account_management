@@ -1,6 +1,6 @@
 from django import forms
 from main.models import FrontPageNotice
-
+from tinymce.widgets import TinyMCE
 
 class FrontPageNoticeForm(forms.ModelForm):
 
@@ -9,7 +9,7 @@ class FrontPageNoticeForm(forms.ModelForm):
                                    widget=forms.TextInput(attrs={"size":"125"}))
     
     body_text = forms.CharField(label='Body Text',
-                                widget=forms.Textarea(attrs={"rows":"30", "cols":"125"}))
+                                 widget=TinyMCE(attrs={"rows":20, "cols":200, "plugins": "link image code"}))
 
     enabled = forms.BooleanField(label='Activate',
                                  required=False)
