@@ -20,7 +20,7 @@ class ProfileLoginAttempt(models.Model):
         
         verbose_name = 'Profile Login Attempt'
         verbose_name_plural = 'Profile Login Attempts'
-        ordering = ['timestamp']
+        ordering = ['-timestamp']
     
     def json(self):
         return {

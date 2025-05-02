@@ -42,7 +42,22 @@ class ParametersAdmin(admin.ModelAdmin):
               'password_reset_text_subject', 'password_reset_text')
     actions = []
 
-admin.site.register(Parameters, ParametersAdmin)
+admin.site.register(Parameters, ParametersAdmin,)
+
+@admin.register(ProfileLoginAttempt)
+class ProfileLoginAttemptAdmin(admin.ModelAdmin):
+    '''
+    profile login attempt admin
+    '''
+    list_display = ['my_profile','success','timestamp','note']
+    readonly_fields=['success', 'note','my_profile', 'success', 'timestamp', 'note']
+
+    def has_add_permission(self, request, obj=None):
+        return False
+    def has_change_permission(self, request, obj=None):
+        return False
+    def has_delete_permission(self, request, obj=None):
+        return True
 
 #profile login attempt inline
 class ProfileLoginAttemptInline(admin.TabularInline):
@@ -55,16 +70,17 @@ class ProfileLoginAttemptInline(admin.TabularInline):
             return qs.filter(timestamp__contained_by=DateTimeTZRange(timezone.now() - datetime.timedelta(days=30), timezone.now()))
       
       def has_add_permission(self, request, obj=None):
-            return True
+            return False
 
       def has_change_permission(self, request, obj=None):
-            return True
+            return False
+      
 
-      extra = 0  
       model = ProfileLoginAttempt
-      can_delete = True
-      fields=('success','note')
-      readonly_fields = ('timestamp',)
+      can_delete =  True
+      show_change_link = True
+      list_display=['id','success','note','timestamp']
+      readonly_fields = ('id','timestamp',)
 
 class ProfileAdmin(admin.ModelAdmin):
     '''
