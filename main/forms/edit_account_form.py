@@ -25,6 +25,30 @@ class EditAccountForm(forms.Form):
          self.user = kwargs.pop('user', None)
          super(EditAccountForm, self).__init__(*args, **kwargs)
 
+    def clean_first_name(self):
+        #prevent url injection
+        first_name = self.cleaned_data['first_name'].strip()
+        if "." in first_name or first_name.startswith('http://') or first_name.startswith('https://'):
+            raise forms.ValidationError('URLs are not allowed.')
+        
+        return first_name
+    
+    def clean_last_name(self):
+        #prevent url injection
+        last_name = self.cleaned_data['last_name'].strip()
+        if "." in last_name or last_name.startswith('http://') or last_name.startswith('https://'):
+            raise forms.ValidationError('URLs are not allowed.')
+        
+        return last_name
+    
+    def clean_organization(self):
+        #prevent url injection
+        organization = self.cleaned_data['organization'].strip()
+        if "." in organization or organization.startswith('http://') or organization.startswith('https://'):
+            raise forms.ValidationError('URLs are not allowed.')
+        
+        return organization
+
     #check that passwords match
     def clean_password1(self):
         if self.data['password1'] != "":        
