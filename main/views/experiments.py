@@ -14,6 +14,7 @@ from django.views.generic import TemplateView
 from main.decorators import email_confirmed
 
 from main.models import Parameters
+from main.models.experiments import Experiments
 
 from main.views import HelpDocsMixin
 
@@ -43,7 +44,12 @@ class ExperimentsView(HelpDocsMixin, TemplateView):
 
         parameters = Parameters.objects.first()
 
-        user_experiments = request.user.profile.experiments.filter(disabled=False).order_by('name')
+        #if user is superuser, show all experiments
+        if request.user.is_superuser:
+            user_experiments = Experiments.objects.all().order_by('name')
+        else:
+            #if user is not superuser, show only experiments that are available to all or owned by the user
+            user_experiments = request.user.profile.experiments.filter(disabled=False).order_by('name')
 
         return render(request, self.template_name, {'help_text' : self.get_help_text('/experiments/'),
                                                     'contact_email':parameters.contact_email,

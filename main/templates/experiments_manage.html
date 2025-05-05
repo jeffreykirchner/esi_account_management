@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{%block head%}
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    {%include "experiments_manage/experiments_manage.js"%}
+  });
+
+</script>
+{%endblock head%}
+
+{% block content %}
+
+<div class="row justify-content-lg-center" v-if="!first_load_done">
+  <div class="col text-end mb-4">
+      <i class="fas fa-cog fa-spin fa-2x"></i>
+  </div>
+</div>
+
+<!-- modals -->
+<div v-if="experiment">
+  {%include "experiments_manage/experiments_manage_modal.html"%}
+</div>
+
+<div class="row justify-content-lg-center" v-cloak v-if="first_load_done">
+  <div class="col col-lg-6">
+    {%include "experiments_manage/experiments_manage_card.html"%}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+<div class="card" id="experiment-card">
+  <div class="card-header">
+      <span class="fs-4">Experiment: [[experiment.name]]</span>
+
+      <span class="float-end">
+        <button class="btn btn-outline-primary" type="button" v-on:click = "show_edit_experiment()">
+            Edit <i class="fas fa-pen fa-xs"></i>
+        </button>
+      </span>
+  </div>
+  <div class="card-body">
+    <div class = "row">
+        <div class = "row">
+            <div class="col-md-4 text-md-end">
+                {{edit_experiment_form.manager.label}}:
+            </div>
+            <div class="col-md-8 text-end text-md-start">
+                <span v-if="experiment.manager">
+                    [[experiment.manager.first_name]] [[experiment.manager.last_name]]
+               </span>
+                <span v-else>
+                    No manager assigned
+                </span>
+            </div>               
+        </div>    
+        
+        <div class = "row">
+            <div class = "col-md-4 text-md-end">
+                {{edit_experiment_form.url.label}}:
+            </div>
+            <div class="col-md-8 text-end text-md-start">
+                <span v-if="experiment.url">
+                    <a :href="experiment.url" target="_blank">[[experiment.url]]</a>
+                </span>
+                <span v-else>
+                    No URL provided
+                </span>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-4 text-md-end">
+                {{edit_experiment_form.disabled.label}}:
+            </div>
+            <div class="col-md-8 text-end text-md-start">
+               [[experiment.disabled ? 'Yes' : 'No']]
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-4 text-md-end">
+                {{edit_experiment_form.available_to_all.label}}:
+            </div>
+            <div class="col-md-8 text-end text-md-start">
+                [[experiment.available_to_all ? 'Yes' : 'No']]
+            </div>
+        </div>
+
+        <div class = "row" if="!experiment.available_to_all">
+            <div class="col-md-4 text-md-end">
+                Allowed Users:
+            </div>
+
+            <div class="col">
+                <div v-for="profile in experiment.profiles" class="row">
+                    <div class="col-md-8 text-md-start">
+                       [[profile.user__first_name]] [[profile.user__last_name]]                     
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+  </div>
+
+</div>

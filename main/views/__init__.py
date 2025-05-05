@@ -7,4 +7,5 @@ from .mixins import *
 from .registration import *
 from .experiments import *
 from .get_auth import *
+from .experiments_manage import *
 

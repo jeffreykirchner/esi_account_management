@@ -14,7 +14,7 @@ from main.models.experiments import Experiments
 #gloabal parameters for site
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    experiments = models.ManyToManyField(Experiments)
+    experiments = models.ManyToManyField(Experiments, related_name='profiles_a')
 
     organization = models.CharField(max_length = 1000, default = "Chapman University")   #organization
     global_id = models.UUIDField(default=uuid.uuid4, unique=True)                        #id used across all experiments
@@ -37,6 +37,7 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'Profile'
         verbose_name_plural = 'Profiles'
+        ordering = ['user__last_name', 'user__first_name']
     
     def json(self):
         '''
