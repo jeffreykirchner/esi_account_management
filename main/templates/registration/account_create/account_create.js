@@ -28,7 +28,7 @@ var app = Vue.createApp({
 
             axios.post('{{request.path}}', {
                     action :"create",
-                    formData : $("#create_form").serializeArray(), 
+                    form_data : $("#create_form").serializeArray(), 
                                                 
                 })
                 .then(function (response) {     

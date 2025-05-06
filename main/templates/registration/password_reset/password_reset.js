@@ -20,7 +20,7 @@ var app = Vue.createApp({
 
             axios.post('{{request.path}}', {
                     action :"send_reset",
-                    formData : $("#password_reset_form").serializeArray(), 
+                    form_data : $("#password_reset_form").serializeArray(), 
                                                 
                 })
                 .then(function (response) {     

@@ -77,7 +77,7 @@ def take_create_account(request, data):
 
     form_data_dict = {}             
 
-    for field in data["formData"]:            
+    for field in data["form_data"]:            
         form_data_dict[field["name"]] = field["value"]
 
         #remove caps from email form

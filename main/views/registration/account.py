@@ -81,7 +81,7 @@ def update_profile(user, data):
 
     form_data_dict = {}
 
-    for field in data["formData"]:
+    for field in data["form_data"]:
         form_data_dict[field["name"]] = field["value"]
 
     form = EditAccountForm(form_data_dict, user=user)

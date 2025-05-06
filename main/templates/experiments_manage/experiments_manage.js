@@ -14,7 +14,13 @@ let app = Vue.createApp({
 
         experiment: null,
         experiment_before_edit: null,
+
         cancel_modal: false,
+        upload_collaborators_modal : null,
+
+        collaborators_list_error : "",
+
+        csv_collaborators_list : "",   //csv collaborators list
 
         //modal instances
         edit_experiment_modal:null,
@@ -26,8 +32,10 @@ let app = Vue.createApp({
            
             //setup modals
             app.edit_experiment_modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('edit_experiment_modal'), {keyboard: false});
-
+            app.upload_collaborators_modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('upload_collaborators_modal'), {keyboard: false});
+            
             document.getElementById('edit_experiment_modal').addEventListener('hidden.bs.modal', app.hide_edit_experiment_modal);
+            document.getElementById('upload_collaborators_modal').addEventListener('hidden.bs.modal', app.hide_send_collaborators_list);
 
             app.first_load_done = true;
         },
@@ -110,7 +118,7 @@ let app = Vue.createApp({
             
             axios.post('{{request.get_full_path}}', {
                     status :"update" ,                                
-                    formData : app.experiment,                                                            
+                    form_data : app.experiment,                                                            
                 })
                 .then(function (response) {     
                                                    
@@ -128,8 +136,7 @@ let app = Vue.createApp({
                         app.cancel_modal=true;                          
                         app.display_errors(response.data.errors);
                     }          
-
-                    app.buttonText1="Update"                      
+                 
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -147,7 +154,61 @@ let app = Vue.createApp({
             }
         },
 
-        
+        /**
+         * remove collaborator from session
+         */
+        send_remove_collaborator: function send_remove_collaborator(collaborator_id){
+
+            axios.post('{{request.get_full_path}}', {
+                status :"remove_collaborator" ,                                
+                form_data : collaborator_id,                                                            
+            })
+            .then(function (response) {     
+                                               
+                status=response.data.status;                               
+
+                app.experiment = response.data.experiment;
+                   
+            })
+            .catch(function (error) {
+                console.log(error);
+                app.searching=false;
+            });   
+        },
+
+        /** show edit subject modal
+        */
+        show_upload_collaborators_list_modal : function show_upload_collaborators_list_modal (){
+            app.clear_main_form_errors();
+            app.cancel_modal=true;
+
+            app.email_list_error = "";
+
+            app.collaborators_list_error = "";
+
+            app.upload_collaborators_modal.toggle();
+        },
+
+        /** hide edit subject modal
+        */
+        hide_send_collaborators_list: function hide_send_collaborators_list(){
+            app.csv_collaborators_list = "";
+
+            if(app.cancel_modal)
+            {      
+            
+            }
+        },
+
+        /** send session update form   
+        */
+        send_add_collaborators: function send_add_collaborators(){
+            app.cancel_modal = false;
+            app.working = true;
+
+            app.send_message("add_collaborators",
+                            {"csv_data" : app.csv_collaborators_list});
+        },
 
     },
 

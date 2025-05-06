@@ -31,7 +31,7 @@ var app = Vue.createApp({
 
             axios.post('/accounts/login/', {
                     action :"login",
-                    formData : {
+                    form_data : {
                         username : app.username,
                         password : app.password,
                     }, 

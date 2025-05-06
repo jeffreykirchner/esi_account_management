@@ -69,9 +69,9 @@ def login_function(request,data):
     #logger.info(data)
 
     #convert form into dictionary
-    form_data_dict = data["formData"]           
+    form_data_dict = data["form_data"]           
 
-    # for field in data["formData"]:            
+    # for field in data["form_data"]:            
     #     form_data_dict[field["name"]] = field["value"]
     
     f = LoginForm(form_data_dict)

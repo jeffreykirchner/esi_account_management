@@ -47,7 +47,7 @@ class ExperimentsManageView(SingleObjectMixin, HelpDocsMixin, View):
             return JsonResponse({"experiment" :  experiment.json(),
                                  }, safe=False)
         elif data["status"] == "update":
-            form_data_dict = data["formData"]
+            form_data_dict = data["form_data"]
 
             form = ExperimentForm(form_data_dict,instance=experiment)
             if form.is_valid():

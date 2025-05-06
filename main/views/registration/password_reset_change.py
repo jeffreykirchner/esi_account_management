@@ -87,7 +87,7 @@ def change_password(request, data, token):
     #convert form into dictionary
     form_data_dict = {}             
 
-    for field in data["formData"]:            
+    for field in data["form_data"]:            
         form_data_dict[field["name"]] = field["value"]
     
     f = PasswordResetChangeForm(form_data_dict)
