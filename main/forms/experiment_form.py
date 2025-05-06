@@ -3,12 +3,18 @@
 from django import forms
 
 from main.models import Experiments
+from main.models import Profile
 
 
 class ExperimentForm(forms.ModelForm):   
     '''
     edit experiment parameters
     '''
+
+    manager = forms.ModelChoiceField(label="Manager",
+                                     queryset=Profile.objects.all(),
+                                     empty_label=None,
+                                     widget=forms.Select(attrs={"v-model":"experiment.manager"}))
 
     name = forms.CharField(label='Title',
                            widget=forms.TextInput(attrs={"v-model":"experiment.name", }))
@@ -28,5 +34,5 @@ class ExperimentForm(forms.ModelForm):
     
     class Meta:
         model=Experiments
-        fields = ['name', 'url', 'available_to_all', 'disabled']
+        fields = ['name', 'manager', 'url', 'available_to_all', 'disabled']
 

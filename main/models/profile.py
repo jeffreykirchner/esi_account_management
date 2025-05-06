@@ -49,6 +49,7 @@ class Profile(models.Model):
                 'email' : self.user.email,
                 'organization' : self.organization,
                 'global_id' : self.global_id,
+                'id' : self.pk
                 }
 
 #delete associated user model when profile is deleted

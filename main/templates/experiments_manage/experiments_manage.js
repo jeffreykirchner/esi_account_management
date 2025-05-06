@@ -161,7 +161,7 @@ let app = Vue.createApp({
 
             axios.post('{{request.get_full_path}}', {
                 status :"remove_collaborator" ,                                
-                form_data : collaborator_id,                                                            
+                collaborator_id : collaborator_id,                                                            
             })
             .then(function (response) {     
                                                
@@ -203,11 +203,33 @@ let app = Vue.createApp({
         /** send session update form   
         */
         send_add_collaborators: function send_add_collaborators(){
-            app.cancel_modal = false;
-            app.working = true;
+            axios.post('{{request.get_full_path}}', {
+                status :"add_collaborators" ,                                
+                csv_data : app.csv_collaborators_list,                                                            
+            })
+            .then(function (response) {     
+                                               
+                status=response.data.status;                               
 
-            app.send_message("add_collaborators",
-                            {"csv_data" : app.csv_collaborators_list});
+                app.clear_main_form_errors();
+
+                if(status=="success")
+                {                                 
+                    app.experiment =  response.data.experiment;  
+                    app.upload_collaborators_modal.toggle(); //hide modal
+                    app.csv_collaborators_list = "";
+                    app.collaborators_list_error = "";
+                }
+                else
+                {      
+                    app.collaborators_list_error = response.data.errors_message;                        
+                }          
+             
+            })
+            .catch(function (error) {
+                console.log(error);
+                app.searching=false;
+            });
         },
 
     },

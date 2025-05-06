@@ -30,11 +30,12 @@ class Experiments(models.Model):
         return json representation of the experiment
         '''
 
-        profiles = self.profiles_a.values('user__first_name', 'user__last_name', 'user__email')
+        profiles = self.profiles_a.values('pk','user__first_name', 'user__last_name', 'user__email')
 
         return {
             "id": self.id,
-            "manager": self.manager.json() if self.manager else None,
+            "manager": self.manager.pk if self.manager else None,
+            "manager_json": self.manager.json() if self.manager else None,
             "name": self.name,
             "url": self.url,
             "available_to_all": 1 if self.available_to_all else 0,

@@ -6,6 +6,9 @@
         <button class="btn btn-outline-primary" type="button" v-on:click = "show_edit_experiment()">
             Edit <i class="fas fa-pen fa-xs"></i>
         </button>
+        <button class="btn btn-outline-success ms-2" type="button" v-on:click = "show_upload_collaborators_list_modal()">
+            Add Users <i class="fas fa-plus"></i>
+        </button>
       </span>
   </div>
   <div class="card-body">
@@ -16,7 +19,7 @@
             </div>
             <div class="col-md-8 text-end text-md-start">
                 <span v-if="experiment.manager">
-                    [[experiment.manager.first_name]] [[experiment.manager.last_name]]
+                    [[experiment.manager_json.first_name]] [[experiment.manager_json.last_name]]
                </span>
                 <span v-else>
                     No manager assigned
@@ -67,7 +70,7 @@
                        [[profile.user__first_name]] [[profile.user__last_name]] 
                        <button title="Remove Collaborator" 
                        class="remove_collaborator_button text-danger" 
-                       v-on:click="send_remove_collaborator(c)">x</button>                     
+                       v-on:click="send_remove_collaborator(profile.pk)">x</button>                     
                     </div>                    
                 </div>
             </div>
