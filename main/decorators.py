@@ -3,8 +3,10 @@ from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.http import HttpResponseNotFound
 
 from main.views import VerifyAccountResend
+from main.models import Experiments
 
 def email_confirmed(function):
     def wrap(request, *args, **kwargs):       
@@ -24,4 +26,21 @@ def in_debug_mode(function):
         else:
             raise PermissionDenied
     wrap.__doc__ = function.__doc__
-    wrap.__name__ 
+    wrap.__name__ = function.__name__
+    return wrap
+
+def is_manager(function):
+    def wrap(request, *args, **kwargs):   
+        try:
+            experiment = Experiments.objects.get(id=kwargs['pk'])    
+        except Experiments.DoesNotExist:
+            return HttpResponseNotFound("Error: Experiment not found.")
+        
+        #allow if super user or manager
+        if request.user.is_superuser or experiment.manager == request.user.profile:
+            return function(request, *args, **kwargs)
+        
+        return HttpResponseNotFound("Error: You are not the manager.")
+
+    return wrap
+   

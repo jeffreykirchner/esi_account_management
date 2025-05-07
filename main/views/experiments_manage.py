@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from django import forms
 
 from main.decorators import email_confirmed
+from main.decorators import is_manager
 
 from main.models import Parameters
 from main.models import Experiments
@@ -34,7 +35,8 @@ class ExperimentsManageView(SingleObjectMixin, HelpDocsMixin, View):
     model = Experiments
 
     @method_decorator(login_required)
-    @method_decorator(email_confirmed)
+    @method_decorator(email_confirmed)    
+    @method_decorator(is_manager)
     def post(self, request, *args, **kwargs):
         '''
         handle post requests
@@ -110,7 +112,8 @@ class ExperimentsManageView(SingleObjectMixin, HelpDocsMixin, View):
             
 
     @method_decorator(login_required)
-    @method_decorator(email_confirmed)
+    @method_decorator(email_confirmed)    
+    @method_decorator(is_manager)    
     def get(self, request, *args, **kwargs):
         '''
         handle get requests
