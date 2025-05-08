@@ -21,7 +21,7 @@
           {% for experiment in experiments %}
             <tr>   
               <td style="text-align: center;">
-                {% if user.is_superuser %}
+                {% if user.is_superuser or user.profile == experiment.manager %}
                   <a href='{%url "experiments-manage" experiment.id%}'>{{experiment.name}}</a>
                 {% else %}
                   {{experiment.name}}
