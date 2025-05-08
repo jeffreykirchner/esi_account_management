@@ -9,18 +9,31 @@ class EditAccountForm(forms.Form):
     '''
     edit account form
     '''
-    first_name = forms.CharField(label='First Name', max_length=100)
-    last_name = forms.CharField(label='Last Name', max_length=100)
-    email = forms.EmailField(label='Email Address (Verification required.)')
-    organization = forms.CharField(label='Organization', max_length=100)
+    first_name = forms.CharField(label='First Name', 
+                                 max_length=100,
+                                 widget=forms.TextInput(attrs={"v-model":"form_data.first_name"}))
+    
+    last_name = forms.CharField(label='Last Name', 
+                                max_length=100,
+                                widget=forms.TextInput(attrs={"v-model":"form_data.last_name"}))
+    
+    email = forms.EmailField(label='Email Address', 
+                             widget=forms.EmailInput(attrs={"v-model":"form_data.email"}))
+    
+    organization = forms.CharField(label='Organization', 
+                                   max_length=100,
+                                   widget=forms.TextInput(attrs={"v-model":"form_data.organization"}))
 
     password1 = forms.CharField(label='Password (Leave blank if no change.)',
-                                widget=forms.PasswordInput(),
-                                required=False)
+                                required=False,
+                                widget=forms.PasswordInput(attrs={"autocomplete":"new-password",
+                                                                  "v-model":"form_data.password1"}))
+    
     password2 = forms.CharField(label='Repeat Password',
-                                widget=forms.PasswordInput(),
-                                required=False)
-
+                                required=False,
+                                widget=forms.PasswordInput(attrs={"autocomplete":"new-password",
+                                                                  "v-model":"form_data.password2"}))
+                                
     def __init__(self, *args, **kwargs):
          self.user = kwargs.pop('user', None)
          super(EditAccountForm, self).__init__(*args, **kwargs)

@@ -5,16 +5,14 @@ import uuid
 
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.contrib.auth.models import User
-from django.urls import reverse
 from django.contrib.auth import logout
 from django.views.generic import TemplateView
 from django.contrib.auth.hashers import make_password
+from django.core.serializers.json import DjangoJSONEncoder
 
 from main.models import Parameters
 from main.models import Profile
 from main.forms import PasswordResetChangeForm
-from main.globals import send_mass_email_service
 
 from main.views import HelpDocsMixin
 
@@ -50,8 +48,10 @@ class PasswordResetChangeView(HelpDocsMixin, TemplateView):
         parameters = Parameters.objects.first()
 
         form_ids=[]
+        form_json = {}
         for i in form:
             form_ids.append(i.html_name)
+            form_json[i.html_name] = i.initial
 
         #check that code is valid
         valid_code_profile = check_valid_code(token)
@@ -61,8 +61,9 @@ class PasswordResetChangeView(HelpDocsMixin, TemplateView):
                                                   "help_text" : self.get_help_text(request.path),
                                                   "contact_email":'asdf',
                                                   "valid_code":False if not valid_code_profile else True,
-                                                  "form_ids":form_ids})
-    
+                                                  "form_ids":form_ids,
+                                                  "form_json": json.dumps(form_json, cls=DjangoJSONEncoder),})
+
 def check_valid_code(token):
     logger = logging.getLogger(__name__) 
 
@@ -85,10 +86,10 @@ def change_password(request, data, token):
     # p = Parameters.objects.first()
 
     #convert form into dictionary
-    form_data_dict = {}             
+    form_data_dict = data["form_data"]           
 
-    for field in data["form_data"]:            
-        form_data_dict[field["name"]] = field["value"]
+    # for field in data["form_data"]:            
+    #     form_data_dict[field["name"]] = field["value"]
     
     f = PasswordResetChangeForm(form_data_dict)
 

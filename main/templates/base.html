@@ -19,14 +19,11 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js" integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ==" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>    
         
-
         {%if DEBUG%}
-        <!-- <script src="https://unpkg.com/vue@3.0.5"></script> -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.10/vue.global.min.js" integrity="sha512-kxhu7A5mSpcOAakRjiNTJLIggQLp04PRyez924BeDmtuA1p5JeYlPlFySkVvu64qMCUkxWcDwgjfASFdsIRr+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js" integrity="sha512-Wbf9QOX8TxnLykSrNGmAc5mDntbpyXjOw9zgnKql3DgQ7Iyr5TCSPWpvpwDuo+jikYoSNMD9tRRH854VfPpL9A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         {%else%}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.10/vue.global.prod.min.js" integrity="sha512-LCSC9Dry2iNPxpqTl5wlCM607bKWzBA1h/UMWp2BOC5YG2OAq6BNGYeAeNq8x6CxfQDZQijA/QVwN+kFPZVIZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.prod.min.js" integrity="sha512-39BSQXI5q1XlvVhLfFRidKG8KM6Tr6VS/XSnNo6N/A0ZXexHCeoUI/s+ulujQy3UREjoLNrMnFat8VI0mMugWA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         {%endif%}
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
@@ -44,10 +41,14 @@
         </style>
 
         <script>
-            $(document).ready(function(){
+            document.addEventListener("DOMContentLoaded", function(){
+
+            let helpModal = new bootstrap.Modal(document.getElementById('helpModal'), {
+                keyboard: false
+            });
 
             function showHelp(){                        
-                $('#helpModal').modal('show');
+                helpModal.show();
             }
 
             var btn = document.getElementById("helpButton");

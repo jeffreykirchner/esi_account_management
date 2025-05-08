@@ -17,14 +17,14 @@ var app = Vue.createApp({
         //get list of users based on search
         sendVerificationEmail: function sendVerificationEmail(){
             
-            app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
+            app.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
 
             axios.post("{%url 'verify-account-resend'%}", {                            
                 action:"sendVerificationEmail",                             
             })
             .then(function (response) {                         
-                app.$data.status = response.data.status;
-                app.$data.buttonText ='Send Email Verification <i class="fas fa-envelope"></i>';
+                app.status = response.data.status;
+                app.buttonText ='Send Email Verification <i class="fas fa-envelope"></i>';
             })
             .catch(function (error) {
                 console.log(error);                               
@@ -36,10 +36,10 @@ var app = Vue.createApp({
                 action:"getUser",                                                            
             })
             .then(function (response) {                         
-                app.$data.emailVerified = response.data.emailVerified;
-                app.$data.adminEmail = response.data.adminEmail;
-                app.$data.admainName = response.data.admainName;
-                // app.$data.searchButtonText = 'Search <i class="fas fa-search"></i>';
+                app.emailVerified = response.data.emailVerified;
+                app.adminEmail = response.data.adminEmail;
+                app.admainName = response.data.admainName;
+                // app.searchButtonText = 'Search <i class="fas fa-search"></i>';
             })
             .catch(function (error) {
                 console.log(error);                               

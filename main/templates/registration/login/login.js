@@ -26,8 +26,8 @@ var app = Vue.createApp({
         //get current, last or next month
 
         login:function login(){
-            app.$data.loginButtonText = '<i class="fas fa-spinner fa-spin"></i>';
-            app.$data.loginErrorText = "";
+            app.loginButtonText = '<i class="fas fa-spinner fa-spin"></i>';
+            app.loginErrorText = "";
 
             axios.post('/accounts/login/', {
                     action :"login",
@@ -42,12 +42,12 @@ var app = Vue.createApp({
                     
                     status=response.data.status;                               
 
-                    app.clearMainFormErrors();
+                    app.clear_main_form_errors();
       
                     if(status == "validation")
                     {              
                         //form validation error           
-                        app.displayErrors(response.data.errors);
+                        app.display_errors(response.data.errors);
                     }
                     else if(status == "error")
                     {
@@ -93,32 +93,31 @@ var app = Vue.createApp({
                 });                        
         },
 
-        clearMainFormErrors:function clearMainFormErrors(){
-
-            s = app.$data.form_ids;                    
-            for(var i in s)
+        clear_main_form_errors:function clear_main_form_errors(){
+            for(let item in app.form_ids)
             {
-                $("#id_" + s[i]).attr("class","form-control");
-                $("#id_errors_" + s[i]).remove();
+                let e = document.getElementById("id_errors_" + app.form_ids[item]);
+                if(e) e.remove();
             }
-
         },
         
         //display form errors
-        displayErrors:function displayErrors(errors){
-            for(var e in errors)
+        display_errors: function display_errors(errors){
+            for(let e in errors)
             {
-                $("#id_" + e).attr("class","form-control is-invalid")
-                var str='<span id=id_errors_'+ e +' class="text-danger">';
+                let str='<span id=id_errors_'+ e +' class="text-danger">';
                 
-                for(var i in errors[e])
+                for(let i in errors[e])
                 {
                     str +=errors[e][i] + '<br>';
                 }
 
                 str+='</span>';
-                $("#div_id_" + e).append(str); 
 
+                document.getElementById("div_id_" + e).insertAdjacentHTML('beforeend', str);
+
+                document.getElementById("div_id_" + e).scrollIntoView();
+                
             }
         },
 

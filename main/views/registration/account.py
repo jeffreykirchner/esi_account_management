@@ -12,6 +12,7 @@ from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.utils.html import strip_tags
+from django.core.serializers.json import DjangoJSONEncoder
 
 from main.models import help_docs
 from main.forms import EditAccountForm
@@ -36,7 +37,7 @@ class AccountView(HelpDocsMixin, TemplateView):
         action = data.get("action", "fail")
 
         if action == "update":
-            return update_profile(request.user, data)
+            return update_profile(request.user, data)       
 
         #valid action not found        
         return JsonResponse({"status" :  "error"}, safe=False)
@@ -47,12 +48,7 @@ class AccountView(HelpDocsMixin, TemplateView):
         handle get requests
         '''
 
-        form = EditAccountForm(
-            initial={'first_name': request.user.first_name,
-                     'last_name': request.user.last_name,
-                     'email':request.user.email,
-                     'organization':request.user.profile.organization}
-        )
+        form = EditAccountForm()
 
         form['email'].label = "Email (Verification required)"
         form['password1'].label = "Password (Leave blank if no change)"
@@ -64,12 +60,22 @@ class AccountView(HelpDocsMixin, TemplateView):
         except Exception  as e:
             help_text = "No help doc was found."
 
-        form_ids = []
+        form_ids=[]
+        form_json = {}
         for i in form:
             form_ids.append(i.html_name)
+            form_json[i.html_name] = i.initial
+
+        form_json['first_name'] = request.user.first_name
+        form_json['last_name'] = request.user.last_name
+        form_json['email'] = request.user.email
+        form_json['organization'] = request.user.profile.organization
+        form_json['password1'] = ""
+        form_json['password2'] = ""
 
         return render(request, self.template_name, {'form': form,
                                                     'form_ids': form_ids,
+                                                    'form_json': json.dumps(form_json, cls=DjangoJSONEncoder),
                                                     'help_text' : self.get_help_text(request.path),})
 def update_profile(user, data):
     '''
@@ -79,10 +85,10 @@ def update_profile(user, data):
     logger.info(f"Update Profile: {user}")
     #logger.info(data)
 
-    form_data_dict = {}
+    form_data_dict = data["form_data"]
 
-    for field in data["form_data"]:
-        form_data_dict[field["name"]] = field["value"]
+    # for field in data["form_data"]:
+    #     form_data_dict[field["name"]] = field["value"]
 
     form = EditAccountForm(form_data_dict, user=user)
 

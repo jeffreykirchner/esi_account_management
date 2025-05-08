@@ -10,6 +10,7 @@ var app = Vue.createApp({
         loginErrorText : "",
         form_ids : {{form_ids|safe}},    
         status:"update", 
+        form_data : {{form_json|safe}},
         human:false,                  
     }},
 
@@ -17,37 +18,37 @@ var app = Vue.createApp({
         //get current, last or next month
 
         create: function create(){
-            if(!app.$data.human)
+            if(!app.human)
             {
             alert("Please confirm you are a person.");
             return;
             }
 
-            app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
-            app.$data.loginErrorText = "";
+            app.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
+            app.loginErrorText = "";
 
             axios.post('{{request.path}}', {
                     action :"create",
-                    form_data : $("#create_form").serializeArray(), 
+                    form_data : app.form_data, 
                                                 
                 })
                 .then(function (response) {     
                     
                 status=response.data.status;                               
 
-                app.clearMainFormErrors();
+                app.clear_main_form_errors();
 
                 if(status == "error")
                 {              
                     //form validation error           
-                    app.displayErrors(response.data.errors);
+                    app.display_errors(response.data.errors);
                 }
                 else
                 {
-                    app.$data.status="done";
+                    app.status="done";
                 }                        
 
-                app.$data.buttonText = 'Submit <i class="fas fa-sign-in-alt"></i>';
+                app.buttonText = 'Submit <i class="fas fa-sign-in-alt"></i>';
 
                 })
                 .catch(function (error) {
@@ -55,52 +56,43 @@ var app = Vue.createApp({
                 });                        
         },
 
-        showHelp:function showHelp(){                        
-            $('#helpModal').modal('show');
-        },
-
         humanChecker:function humanChecker(){
-            app.$data.humanButtonText = 'Press if human <i class="fas fa-spinner fa-spin"></i>';
+            app.humanButtonText = 'Press if human <i class="fas fa-spinner fa-spin"></i>';
             setTimeout(app.humanConfirm, 1000); 
         },
 
         humanConfirm:function humanConfirm(){
-            app.$data.humanButtonText = 'Thanks human <i class="fas fa-user-check"></i>';
-            app.$data.human=true;
+            app.humanButtonText = 'Thanks human <i class="fas fa-user-check"></i>';
+            app.human=true;
         },
 
-        clearMainFormErrors:function clearMainFormErrors(){
-
-            s = app.$data.form_ids;                    
-            for(var i in s)
+        clear_main_form_errors:function clear_main_form_errors(){
+            for(let item in app.form_ids)
             {
-                $("#id_" + s[i]).attr("class","form-control");
-                $("#id_errors_" + s[i]).remove();
+                let e = document.getElementById("id_errors_" + app.form_ids[item]);
+                if(e) e.remove();
             }
-
         },
         
         //display form errors
-        displayErrors: function displayErrors(errors){
-            for(var e in errors)
+        display_errors: function display_errors(errors){
+            for(let e in errors)
             {
-                $("#id_" + e).attr("class","form-control is-invalid")
-                var str='<span id=id_errors_'+ e +' class="text-danger">';
+                let str='<span id=id_errors_'+ e +' class="text-danger">';
                 
-                for(var i in errors[e])
+                for(let i in errors[e])
                 {
                     str +=errors[e][i] + '<br>';
                 }
 
                 str+='</span>';
-                $("#div_id_" + e).append(str); 
 
-                var elmnt = document.getElementById("div_id_" + e);
-                elmnt.scrollIntoView(); 
+                document.getElementById("div_id_" + e).insertAdjacentHTML('beforeend', str);
 
+                document.getElementById("div_id_" + e).scrollIntoView();
+                
             }
         },
-
         
     },            
 
