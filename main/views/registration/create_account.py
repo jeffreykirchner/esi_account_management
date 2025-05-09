@@ -141,8 +141,8 @@ def create_acocunt(email, user_name, password, first_name, last_name, organizati
     profile.save()
     
     # add default experiments to profile
-    profile.experiments.set(Experiments.objects.filter(available_to_all=True))
-    profile.save()    
+    # profile.experiments.set(Experiments.objects.filter(available_to_all=True))
+    # profile.save()    
 
     logger.info(f'Account created: {user}')
 

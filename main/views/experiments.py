@@ -40,6 +40,9 @@ class ExperimentsView(HelpDocsMixin, TemplateView):
                 #get experiments that are available to user
                 valid_experiments = request.user.profile.experiments.filter(disabled=False).values_list('id', flat=True)
 
+                #available to all experiments
+                valid_experiments = valid_experiments | Experiments.objects.filter(available_to_all=True).values_list('id', flat=True)
+
                 #get experiments that users is a manager of
                 managed_experiments = Experiments.objects.filter(manager=request.user.profile).values_list('id', flat=True)
 
@@ -88,12 +91,14 @@ class ExperimentsView(HelpDocsMixin, TemplateView):
 
         parameters = Parameters.objects.first()
 
-        #if user is superuser, show all experiments
-        if request.user.is_superuser:
-            user_experiments = Experiments.objects.all().order_by('name')
-        else:
-            #if user is not superuser, show only experiments that are available to all or owned by the user
-            user_experiments = request.user.profile.experiments.filter(disabled=False).order_by('name')
+        # #if user is superuser, show all experiments
+        # if request.user.is_superuser:
+        #     user_experiments = Experiments.objects.all().order_by('name')
+        # else:
+        #     #if user is not superuser, show only experiments that are available to all or owned by the user
+        #     user_experiments_ids = request.user.profile.experiments.filter(disabled=False).values_list('id', flat=True)
+        #     user_experiments_ids = user_experiments_ids | Experiments.objects.filter(available_to_all=True).values_list('id', flat=True)
+        #     user_experiments = Experiments.objects.filter(id__in=user_experiments_ids).order_by('name')
 
         return render(request, self.template_name, {'help_text' : self.get_help_text('/experiments/'),
                                                     'contact_email':parameters.contact_email,

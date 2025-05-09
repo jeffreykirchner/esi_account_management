@@ -73,7 +73,7 @@ class GetAuthView(APIView):
         
         #check that user has permissions for experiment
         if status == "success":
-            if experiment in user.profile.experiments.all():
+            if experiment.available_to_all or experiment in user.profile.experiments.all():
                 profile = user.profile.json()
             else:
                 status = "fail"
