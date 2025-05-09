@@ -32,8 +32,52 @@ class ExperimentsView(HelpDocsMixin, TemplateView):
         '''
         data = json.loads(request.body.decode('utf-8'))
 
-        #valid action not found        
-        return JsonResponse({"status" :  "error"}, safe=False)
+        if data["status"] == "get":
+            if request.user.is_superuser:
+                user_experiments = Experiments.objects.all().order_by('name')
+                managed_experiments = Experiments.objects.all().values_list('id', flat=True)
+            else:
+                #get experiments that are available to user
+                valid_experiments = request.user.profile.experiments.filter(disabled=False).values_list('id', flat=True)
+
+                #get experiments that users is a manager of
+                managed_experiments = Experiments.objects.filter(manager=request.user.profile).values_list('id', flat=True)
+
+                valid_experiments = valid_experiments | managed_experiments
+
+                user_experiments = Experiments.objects.filter(id__in=valid_experiments).order_by('name')
+
+            return JsonResponse({"experiments" : [experiment.json() for experiment in user_experiments],
+                                 "managed_experiments" : list(managed_experiments)},
+                                status=200,
+                                safe=False)
+        elif data["status"] == "add":
+            if request.user.is_superuser:
+                # get experiment data
+                experiment_name = f'*** New Experiment *** {len(Experiments.objects.all()) + 1}'
+                experiment = Experiments.objects.create(name=experiment_name)
+                user_experiments = Experiments.objects.all().order_by('name')
+                managed_experiments = Experiments.objects.all().values_list('id', flat=True)
+
+                return JsonResponse({"experiments" : [experiment.json() for experiment in user_experiments],
+                                    "managed_experiments" : list(managed_experiments)},
+                            status=200,
+                            safe=False)
+        elif data["status"] == "delete":
+            if request.user.is_superuser:
+                # delete experiment
+                experiment = Experiments.objects.get(id=data["experiment_id"])
+                experiment.delete()
+                user_experiments = Experiments.objects.all().order_by('name')
+                managed_experiments = Experiments.objects.all().values_list('id', flat=True)
+
+                return JsonResponse({"experiments" : [experiment.json() for experiment in user_experiments],
+                                    "managed_experiments" : list(managed_experiments)},
+                            status=200,
+                            safe=False)
+
+        #valid action not found
+        return JsonResponse({"status" :  "error"}, status=400, safe=False)
 
     @method_decorator(login_required)
     @method_decorator(email_confirmed)
@@ -53,5 +97,5 @@ class ExperimentsView(HelpDocsMixin, TemplateView):
 
         return render(request, self.template_name, {'help_text' : self.get_help_text('/experiments/'),
                                                     'contact_email':parameters.contact_email,
-                                                    'experiments': user_experiments})
+                                                    })
 
