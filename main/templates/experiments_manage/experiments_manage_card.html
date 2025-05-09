@@ -18,7 +18,7 @@
                 {{edit_experiment_form.manager.label}}:
             </div>
             <div class="col-md-8 text-end text-md-start">
-                <span v-if="experiment.manager">
+                <span v-if="experiment.manager && experiment.manager_json">
                     [[experiment.manager_json.first_name]] [[experiment.manager_json.last_name]]
                </span>
                 <span v-else>
