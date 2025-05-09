@@ -51,7 +51,7 @@ class TestAPI(TestCase):
         request.user = AnonymousUser()
 
         #check that user has access to experiment 1 and not 2
-        data = {'action': 'create', 'form_data': [{'name': 'first_name', 'value': 'John'}, {'name': 'last_name', 'value': 'smith'}, {'name': 'email', 'value': 'abc@123.edu'}, {'name': 'organization', 'value': 'College Tech'}, {'name': 'password1', 'value': 'qwerty112233'}, {'name': 'password2', 'value': 'qwerty112233'}]}
+        data = {'action': 'create', 'form_data': {'first_name' : 'John', 'last_name': 'smith', 'email': 'abc@123.edu', 'organization': 'College Tech', 'password1': 'qwerty112233', 'password2': 'qwerty112233'}}
 
         result = json.loads(take_create_account(request, data).content.decode("UTF-8"))
         self.assertEqual(result['status'], 'success')
