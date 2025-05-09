@@ -124,7 +124,7 @@ class ExperimentsManageView(SingleObjectMixin, HelpDocsMixin, View):
 
         edit_experiment_form = ExperimentForm()
 
-        return render(request, self.template_name, {'help_text' : self.get_help_text('/experiments/'),
+        return render(request, self.template_name, {'help_text' : self.get_help_text('/experiments-manage/'),
                                                     'contact_email':parameters.contact_email,
                                                     'edit_experiment_form': edit_experiment_form,
                                                     })
