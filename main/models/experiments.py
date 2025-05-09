@@ -7,7 +7,7 @@ import main
 
 #gloabal parameters for site
 class Experiments(models.Model):
-    manager = models.OneToOneField("main.profile", on_delete=models.SET_NULL, null=True, blank=True, related_name='experiments_a')  #user who manages the experiment
+    manager = models.ForeignKey("main.profile", on_delete=models.SET_NULL, null=True, blank=True, related_name='experiments_a')  #user who manages the experiment
 
     name =  models.CharField(max_length = 1000, default = "*** New Experiment **", unique=True)            #name of the experiment
     url =  models.URLField(max_length = 200, default = "https://www.google.com")              #URL of the experiment
