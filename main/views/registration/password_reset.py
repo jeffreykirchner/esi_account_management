@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.auth import logout
 from django.views.generic import TemplateView
+from django.core.serializers.json import DjangoJSONEncoder
 
 from main.models import Parameters
 from main.forms import PasswordResetForm
@@ -45,24 +46,27 @@ class PasswordResetView(HelpDocsMixin, TemplateView):
         parameters = Parameters.objects.first()
 
         form_ids=[]
+        form_json = {}
         for i in form:
             form_ids.append(i.html_name)
+            form_json[i.html_name] = i.initial
 
         return render(request,self.template_name,{"form":form,
                                                   'help_text' : self.get_help_text(request.path),
                                                   "contact_email":parameters.contact_email,
-                                                  "form_ids":form_ids})
-    
+                                                  "form_ids":form_ids,
+                                                  "form_json": json.dumps(form_json, cls=DjangoJSONEncoder)})
+
 def send_reset(request, data):
-    logger = logging.getLogger(__name__) 
+    logger = logging.getLogger(__name__)
    
     parameters = Parameters.objects.first()
 
     #convert form into dictionary
-    form_data_dict = {}             
+    form_data_dict = data["form_data"]            
 
-    for field in data["formData"]:            
-        form_data_dict[field["name"]] = field["value"]
+    # for field in data["form_data"]:            
+    #     form_data_dict[field["name"]] = field["value"]
     
     form = PasswordResetForm(form_data_dict)
 

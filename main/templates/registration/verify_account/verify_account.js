@@ -18,15 +18,15 @@ var app = Vue.createApp({
         //get list of users based on search
         verifyEmail: function verifyEmail(){
             
-            app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
+            app.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
 
             axios.post('{{request.path}}', {                            
                 action:"verifyEmail",                             
             })
             .then(function (response) {                         
-                app.$data.emailVerified = response.data.emailVerified;
-                app.$data.failed = response.data.failed;
-                app.$data.buttonText ='Click to Verify <i class="fas fa-sign-in-alt"></i> ';
+                app.emailVerified = response.data.emailVerified;
+                app.failed = response.data.failed;
+                app.buttonText ='Click to Verify <i class="fas fa-sign-in-alt"></i> ';
             })
             .catch(function (error) {
                 console.log(error);                               

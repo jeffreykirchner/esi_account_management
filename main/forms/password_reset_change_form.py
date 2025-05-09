@@ -9,10 +9,12 @@ class PasswordResetChangeForm(forms.Form):
     '''
 
     password1 = forms.CharField(label='New Password',
-                               widget=forms.PasswordInput(attrs={"autocomplete":"new-password"}))
+                               widget=forms.PasswordInput(attrs={"autocomplete":"new-password",
+                                                                 "v-model":"form_data.password1"}))
 
     password2 = forms.CharField(label='Repeat New Password',
-                                widget=forms.PasswordInput(attrs={"autocomplete":"new-password"}))       
+                                widget=forms.PasswordInput(attrs={"autocomplete":"new-password",
+                                                                  "v-model":"form_data.password2"}))       
 
 
     #check that passwords match

@@ -42,13 +42,13 @@ class TestAuth(TestCase):
         request.user = AnonymousUser()
 
         #password
-        data = {'action': 'create', 'formData': [{'name': 'first_name', 'value': 'John'}, {'name': 'last_name', 'value': 'smith'}, {'name': 'email', 'value': 'abc@123.edu'}, {'name': 'organization', 'value': 'College Tech'}, {'name': 'password1', 'value': 'qwerty123'}, {'name': 'password2', 'value': 'qwerty123'}]}
+        data = {'action': 'create', 'form_data': {'first_name': 'John', 'last_name': 'smith', 'email': 'abc@123.edu', 'organization': 'College Tech', 'password1': 'qwerty123', 'password2': 'qwerty123'}}
 
         result = json.loads(take_create_account(request, data).content.decode("UTF-8"))
         self.assertEqual(result['errors']['password1'][0], 'This password is too common.')
 
         #name and org not present
-        data = {'action': 'create', 'formData': [{'name': 'first_name', 'value': ''}, {'name': 'last_name', 'value': ''}, {'name': 'email', 'value': ''}, {'name': 'organization', 'value': ''}, {'name': 'password1', 'value': ''}, {'name': 'password2', 'value': ''}]}
+        data = {'action': 'create', 'form_data': {'first_name': '', 'last_name': '', 'email': '', 'organization': '', 'password1': '', 'password2': ''}}
 
         result =  json.loads(take_create_account(request, data).content.decode("UTF-8"))
         logger.info(result)
@@ -60,14 +60,14 @@ class TestAuth(TestCase):
         self.assertEqual(result['errors']['password2'][0], 'This field is required.')
 
         #success
-        data = {'action': 'create', 'formData': [{'name': 'first_name', 'value': 'John'}, {'name': 'last_name', 'value': 'smith'}, {'name': 'email', 'value': 'abc@123.edu'}, {'name': 'organization', 'value': 'College Tech'}, {'name': 'password1', 'value': 'qwerty112233'}, {'name': 'password2', 'value': 'qwerty112233'}]}
+        data = {'action': 'create', 'form_data': {'first_name': 'John', 'last_name': 'smith', 'email': 'abc@123.edu', 'organization': 'College Tech', 'password1': 'qwerty112233', 'password2': 'qwerty112233'}}
 
         result =  json.loads(take_create_account(request, data).content.decode("UTF-8"))
         #logger.info(result)
         self.assertEqual(result['status'], 'success')
 
         #double email fail
-        data = {'action': 'create', 'formData': [{'name': 'first_name', 'value': 'John'}, {'name': 'last_name', 'value': 'smith'}, {'name': 'email', 'value': 'abc@123.edu'}, {'name': 'organization', 'value': 'College Tech'}, {'name': 'password1', 'value': 'qwerty112233'}, {'name': 'password2', 'value': 'qwerty112233'}]}
+        data = {'action': 'create', 'form_data': {'first_name': 'John', 'last_name': 'smith', 'email': 'abc@123.edu', 'organization': 'College Tech', 'password1': 'qwerty112233', 'password2': 'qwerty112233'}}
 
         result =  json.loads(take_create_account(request, data).content.decode("UTF-8"))
         logger.info(result)
@@ -86,7 +86,7 @@ class TestAuth(TestCase):
         request.session.save()
         request.user = AnonymousUser()
 
-        data = {'action': 'create', 'formData': [{'name': 'first_name', 'value': 'John'}, {'name': 'last_name', 'value': 'Smith'}, {'name': 'email', 'value': 'abc@123.edu'}, {'name': 'organization', 'value': 'College Tech'}, {'name': 'password1', 'value': 'qwerty112233'}, {'name': 'password2', 'value': 'qwerty112233'}]}
+        data = {'action': 'create', 'form_data': {'first_name': 'John', 'last_name': 'Smith', 'email': 'abc@123.edu', 'organization': 'College Tech', 'password1': 'qwerty112233', 'password2': 'qwerty112233'}}
         # c = Client()
         # response = c.post('/create-account/', data)
 
@@ -106,7 +106,7 @@ class TestAuth(TestCase):
         user.save()
 
         #check update, no email change
-        data = {'action': 'update', 'formData': [{'name': 'first_name', 'value': 'Adam'}, {'name': 'last_name', 'value': 'Joe'}, {'name': 'email', 'value': 'abc@123.edu'}, {'name': 'organization', 'value': 'Chapman University'}, {'name': 'password1', 'value': ''}, {'name': 'password2', 'value': ''}]}
+        data = {'action': 'update', 'form_data': {'first_name': 'Adam', 'last_name': 'Joe', 'email': 'abc@123.edu', 'organization': 'Chapman University', 'password1': '', 'password2': ''}}
         result = json.loads(update_profile(user, data).content.decode("UTF-8"))
         self.assertEqual(result['status'], 'success')
 
@@ -118,7 +118,7 @@ class TestAuth(TestCase):
         self.assertEqual(user.profile.email_confirmed, 'yes')
 
         #check update, with email change
-        data = {'action': 'update', 'formData': [{'name': 'first_name', 'value': 'Adam'}, {'name': 'last_name', 'value': 'Joe'}, {'name': 'email', 'value': 'abc@chapman.edu'}, {'name': 'organization', 'value': 'Chapman University'}, {'name': 'password1', 'value': ''}, {'name': 'password2', 'value': ''}]}
+        data = {'action': 'update', 'form_data': {'first_name': 'Adam', 'last_name': 'Joe', 'email': 'abc@chapman.edu', 'organization': 'Chapman University', 'password1': '', 'password2': ''}}
         result = json.loads(update_profile(user, data).content.decode("UTF-8"))
         self.assertEqual(result['status'], 'success')
 
@@ -130,7 +130,7 @@ class TestAuth(TestCase):
         self.assertNotEqual(user.profile.email_confirmed, 'yes')
 
         #check password change
-        data = {'action': 'update', 'formData': [{'name': 'first_name', 'value': 'Adam'}, {'name': 'last_name', 'value': 'Joe'}, {'name': 'email', 'value': 'abc@chapman.edu'}, {'name': 'organization', 'value': 'Chapman University'}, {'name': 'password1', 'value': 'qwerty11223344'}, {'name': 'password2', 'value': 'qwerty11223344'}]}
+        data = {'action': 'update', 'form_data': {'first_name': 'Adam', 'last_name': 'Joe', 'email': 'abc@chapman.edu', 'organization': 'Chapman University', 'password1': 'qwerty11223344', 'password2': 'qwerty11223344'}}
         result = json.loads(update_profile(user, data).content.decode("UTF-8"))
         self.assertEqual(result['status'], 'success')
 
@@ -143,13 +143,13 @@ class TestAuth(TestCase):
         self.assertTrue(check_password('qwerty11223344', user.password))
 
         #check valid email address
-        data = {'action': 'update', 'formData': [{'name': 'first_name', 'value': 'Adam'}, {'name': 'last_name', 'value': 'Joe'}, {'name': 'email', 'value': 'abc@chapman'}, {'name': 'organization', 'value': 'Chapman University'}, {'name': 'password1', 'value': ''}, {'name': 'password2', 'value': ''}]}
+        data = {'action': 'update', 'form_data': {'first_name': 'Adam', 'last_name': 'Joe', 'email': 'abc@chapman', 'organization': 'Chapman University', 'password1': '', 'password2': ''}}
         result = json.loads(update_profile(user, data).content.decode("UTF-8"))
         #logger.info(result)
         self.assertEqual(result['errors']['email'][0], 'Enter a valid email address.')
 
         #check valid password
-        data = {'action': 'update', 'formData': [{'name': 'first_name', 'value': 'Adam'}, {'name': 'last_name', 'value': 'Joe'}, {'name': 'email', 'value': 'abc@chapman.edu'}, {'name': 'organization', 'value': 'Chapman University'}, {'name': 'password1', 'value': 'asdfqwert1234'}, {'name': 'password2', 'value': ''}]}
+        data = {'action': 'update', 'form_data': {'first_name': 'Adam', 'last_name': 'Joe', 'email': 'abc@chapman.edu', 'organization': 'Chapman University', 'password1': 'asdfqwert123', 'password2': 'asdfqwert1234'}}
         result = json.loads(update_profile(user, data).content.decode("UTF-8"))
         logger.info(result)
         self.assertEqual(result['errors']['password1'][0], 'Passwords are not the same')

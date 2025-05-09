@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from django.contrib.auth import login
 from django.contrib.auth import get_user_model
 from django.utils.html import strip_tags
+from django.core.serializers.json import DjangoJSONEncoder
 
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -59,13 +60,16 @@ class CreateAccountView(HelpDocsMixin, TemplateView):
             help_text = "No help doc was found."
 
         form_ids=[]
+        form_json = {}
         for i in form:
             form_ids.append(i.html_name)
+            form_json[i.html_name] = i.initial
 
         return render(request, self.template_name ,{'form': form,
                                                     'contact_email':parameters.contact_email, 
                                                     'help_text' : self.get_help_text(request.path),
-                                                    'form_ids':form_ids})
+                                                    'form_ids':form_ids,
+                                                    'form_json': json.dumps(form_json, cls=DjangoJSONEncoder),})
 
 def take_create_account(request, data):
     '''
@@ -75,14 +79,14 @@ def take_create_account(request, data):
     logger = logging.getLogger(__name__) 
     logger.info(f"Create Account")
 
-    form_data_dict = {}             
+    form_data_dict = data["form_data"]             
 
-    for field in data["formData"]:            
-        form_data_dict[field["name"]] = field["value"]
+    # for field in data["form_data"]:            
+    #     form_data_dict[field["name"]] = field["value"]
 
-        #remove caps from email form
-        if field["name"] == "email":
-            form_data_dict["email"] = form_data_dict["email"].strip().lower()
+    #     #remove caps from email form
+    #     if field["name"] == "email":
+            # form_data_dict["email"] = form_data_dict["email"].strip().lower()
     
     f = CreateAccountForm(form_data_dict)
 

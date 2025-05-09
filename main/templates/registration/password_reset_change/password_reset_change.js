@@ -9,40 +9,41 @@ var app = Vue.createApp({
         buttonText : 'Change Password <i class="fas fa-sign-in-alt"></i>',
         messageText : "",
         changeMode:1,
-        form_ids : {{form_ids|safe}}                          
+        form_ids : {{form_ids|safe}},             
+        form_data : {{form_json|safe}},             
     }},
 
     methods:{
         change_password:function change_password(){
-            app.$data.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
-            app.$data.messageText = "";
+            app.buttonText = '<i class="fas fa-spinner fa-spin"></i>';
+            app.messageText = "";
 
             axios.post('{{request.path}}', {
                     action :"change_password",
-                    formData : $("#password_reset_change_form").serializeArray(), 
+                    form_data : app.form_data, 
                                                 
                 })
                 .then(function (response) {     
                     
                   status=response.data.status;                               
 
-                  app.clearMainFormErrors();
+                  app.clear_main_form_errors();
 
                   if(status == "validation")
-                  {              
-                    //form validation error           
-                    app.displayErrors(response.data.errors);
+                  {
+                    //form validation error
+                    app.display_errors(response.data.errors);
                   }
                   else if(status == "error")
                   {
-                    app.$data.messageText = response.data.message;
+                    app.messageText = response.data.message;
                   }
                   else
                   {
-                    app.$data.changeMode = 2;
+                    app.changeMode = 2;
                   }
 
-                  app.$data.buttonText = 'Change Password <i class="fas fa-sign-in-alt"></i>';
+                  app.buttonText = 'Change Password <i class="fas fa-sign-in-alt"></i>';
 
                 })
                 .catch(function (error) {
@@ -50,35 +51,33 @@ var app = Vue.createApp({
                 });                        
             },
 
-        //clear form errors
-        clearMainFormErrors:function clearMainFormErrors(){
-
-            s = app.$data.form_ids;                    
-            for(var i in s)
+         clear_main_form_errors:function clear_main_form_errors(){
+            for(let item in app.form_ids)
             {
-                $("#id_" + s[i]).attr("class","form-control");
-                $("#id_errors_" + s[i]).remove();
+                let e = document.getElementById("id_errors_" + app.form_ids[item]);
+                if(e) e.remove();
             }
-
         },
         
         //display form errors
-        displayErrors:function displayErrors(errors){
-            for(var e in errors)
+        display_errors: function display_errors(errors){
+            for(let e in errors)
             {
-                $("#id_" + e).attr("class","form-control is-invalid")
-                var str='<span id=id_errors_'+ e +' class="text-danger">';
+                let str='<span id=id_errors_'+ e +' class="text-danger">';
                 
-                for(var i in errors[e])
+                for(let i in errors[e])
                 {
                     str +=errors[e][i] + '<br>';
                 }
 
                 str+='</span>';
-                $("#div_id_" + e).append(str); 
 
+                document.getElementById("div_id_" + e).insertAdjacentHTML('beforeend', str);
+
+                document.getElementById("div_id_" + e).scrollIntoView();
+                
             }
-        },        
+        },     
     },            
 
     mounted(){

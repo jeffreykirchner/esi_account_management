@@ -82,6 +82,7 @@ class ProfileLoginAttemptInline(admin.TabularInline):
       list_display=['id','success','note','timestamp']
       readonly_fields = ('id','timestamp',)
 
+@admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     '''
     People model admin
@@ -95,8 +96,6 @@ class ProfileAdmin(admin.ModelAdmin):
     inlines = [ProfileLoginAttemptInline]
 
     actions = []
-
-admin.site.register(Profile, ProfileAdmin)
 
 class UserAdmin(DjangoUserAdmin):
 

@@ -1,33 +1,63 @@
 <div class="card">
     <div class="card-header">
       Experiments
+
+      {% if user.is_superuser %}
+      <span class="float-end">
+        <button class="btn btn-outline-success ms-2" 
+                type="button" 
+                title="Add Experiment"
+                v-on:click = "add_experiment()">
+            Add Experiment <i class="fas fa-plus"></i>
+        </button>
+      </span>
+      {% endif %}
     </div>
 
     <div class="card-body">
-
-      <table class="table table-hover table-condensed table-responsive-md">                            
+      <table class="table table-hover table-condensed table-responsive-md">
 
         <thead>
-            
             <th scope="col" style="text-align: center;">
-                Name                             
+                Name
             </th>
             <th scope="col" style="text-align: center;">
                 Link
-            </th>                                                     
+            </th>   
+            {% if user.is_superuser %}      
+            <th scope="col" style="text-align: center;">
+                Delete
+            </th>     
+            {% endif %}                                       
         </thead>
 
         <tbody id="trade_list" style="font-size: large;">        
-          {% for experiment in experiments %}
-            <tr>   
-              <td style="text-align: center;">
-                {{experiment.name}}
-              </td>
-              <td style="text-align: center;">
-                <a href='{{experiment.url}}'>{{experiment.url}}</a>
-              </td>
-            </tr>
-          {% endfor %}                                                                                             
+          <tr v-for="experiment in experiments" :key="experiment.id">
+
+            <td style="text-align: center;">
+              <span v-if="managed_experiments.includes(experiment.id)">
+                <a :href="'/experiments-manage/' + experiment.id">
+                  [[experiment.name]]
+                </a>
+              </span>
+              <span v-else>
+                [[experiment.name]]
+              </span>
+            </td>
+
+            <td style="text-align: center;">
+              <a :href="experiment.url">[[experiment.url]]</a>
+            </td>
+
+            {% if user.is_superuser %}
+            <td style="text-align: center;">
+              <button class="btn btn-outline-danger btn-sm" 
+                      type="button" 
+                      title="Delete Experiment"
+                      v-on:click = "delete_experiment(experiment.id)">
+                <i class="fas fa-trash"></i>
+              </button>
+            {% endif %}
         </tbody>
         
       </table>

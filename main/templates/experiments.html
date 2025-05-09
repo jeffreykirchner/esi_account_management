@@ -3,7 +3,7 @@
 
 {%block head%}
 <script>
-  $(document).ready(function(){  
+  document.addEventListener("DOMContentLoaded", function(){  
     {%include "experiments/experiments.js"%}
   });
 
@@ -12,7 +12,14 @@
 
 {% block content %}
 
-<div class="row justify-content-lg-center">
+<!-- loading -->
+<div class="row justify-content-lg-center" v-if="!first_load_done || loading">
+  <div class="col text-end mb-4">
+      <i class="fas fa-cog fa-spin fa-2x"></i>
+  </div>
+</div>
+
+<div class="row justify-content-lg-center" v-if="first_load_done && !loading">
   <div class="col col-lg-6">
     {%include "experiments/experiments_card.html"%}
   </div>
