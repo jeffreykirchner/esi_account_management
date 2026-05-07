@@ -5,7 +5,8 @@ import json
 import logging
 import pyotp
 
-from datetime import timedelta
+from datetime import timedelta, datetime
+from zoneinfo import ZoneInfo
 
 from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import render
@@ -85,8 +86,9 @@ def login_function(request,data):
         #check rate limit
         user_rl = User.objects.filter(username=username.lower()).first()
         if user_rl:
-            failed_login_attempts = user_rl.profile.profile_login_attempts.filter(success=False, timestamp__gte=timezone.now()-timedelta(minutes=1)).count()
-
+            time_zone_string = Parameters.objects.first().subject_time_zone
+            failed_login_attempts = user_rl.profile.profile_login_attempts.filter(success=False, timestamp__gte=datetime.now(ZoneInfo(time_zone_string))-timedelta(minutes=1)).count()
+            
             if failed_login_attempts > 5:
                 return JsonResponse({"status":"error", "message":"Login failed, try again later."}, safe=False)
 

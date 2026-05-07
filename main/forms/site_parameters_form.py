@@ -11,6 +11,9 @@ class ParametersAdminForm(forms.ModelForm):
 
     site_URL = forms.CharField(label='Site URL',
                                widget=forms.TextInput(attrs={"size":"125"}))
+    
+    subject_time_zone = forms.CharField(label='Subject Time Zone',
+                                        widget=forms.TextInput(attrs={"size":"125"}))
 
     email_verification_text_subject = forms.CharField(label='Verification email, subject',
                                                       widget=forms.TextInput(attrs={"size":"125"}))

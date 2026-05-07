@@ -38,7 +38,7 @@ class ParametersAdmin(admin.ModelAdmin):
         return False
 
     form = ParametersAdminForm
-    fields = ('site_URL', 'contact_email', 'email_verification_text_subject', 'email_verification_text',
+    fields = ('site_URL', 'contact_email', 'subject_time_zone', 'email_verification_text_subject', 'email_verification_text',
               'password_reset_text_subject', 'password_reset_text')
     actions = []
 
