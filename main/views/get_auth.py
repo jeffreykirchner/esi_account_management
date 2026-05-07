@@ -73,13 +73,16 @@ class GetAuthView(APIView):
         
         #check that user has permissions for experiment
         if status == "success":
-            if experiment.available_to_all or experiment in user.profile.experiments.all():
+            if experiment.available_to_all or \
+               experiment in user.profile.experiments.all() or \
+               experiment.manager == user.profile:
+                
                 profile = user.profile.json()
             else:
                 status = "fail"
                 message = "permission denied"
 
-        logger.info(f"Get Auth Result: status {status}, message {message}")
+        logger.info(f"Get Auth Result: status - {status}, message - {message}")
 
         return Response({"status" : status,
                          "message" : message,
