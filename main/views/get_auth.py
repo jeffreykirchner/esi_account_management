@@ -35,10 +35,13 @@ class GetAuthView(APIView):
         profile = {}
         return_response_status = response_status.HTTP_200_OK
 
+        request_data = getattr(request, 'data', {}) or {}
+        query_params = getattr(request, 'query_params', request.GET)
+
         try:
-            app_name = request.data['app_name']
-            username = request.data['username']
-            password = request.data['password']
+            app_name = query_params.get('app_name') if 'app_name' in query_params else request_data['app_name']
+            username = query_params.get('username') if 'username' in query_params else request_data['username']
+            password = query_params.get('password') if 'password' in query_params else request_data['password']
         except KeyError as e:
             logger.error(f"Get Auth KeyError: {e}")
             return Response({"status" : "fail",
@@ -47,39 +50,39 @@ class GetAuthView(APIView):
 
         logger.info(f"Get Auth: {app_name}, {request.user}")
 
-        experiments = Experiments.objects.filter(name=str(app_name), disabled=False)
-        user = authenticate(request, username=username.lower(), password=password)
-
-        logger.info(f"Get Auth experiments found: {experiments}")
-
-        #check experiment exists
-        if experiments.count() != 1:
+        # single-row lookup avoids separate count() and first() queries
+        try:
+            experiment = Experiments.objects.only('id', 'available_to_all', 'manager_id').get(name=str(app_name), disabled=False)
+        except (Experiments.DoesNotExist, Experiments.MultipleObjectsReturned):
             status = "fail"
             message = "experiment not found"
-        else:
-            experiment = experiments.first()
         
         #check that user exists
         if status == "success":
+            user = authenticate(request, username=username.lower(), password=password)
             if not user:
                 status = "fail"
                 message = "user not found"
         
         #check that user email verified
         if status == "success":
-            if user.profile.email_confirmed != 'yes':
+            user_profile = user.profile
+            if user_profile.email_confirmed != 'yes':
                 status = "fail"
                 message = "email not verified"
         
         #check that user has permissions for experiment
         if status == "success":
-            if experiment.available_to_all or experiment in user.profile.experiments.all():
-                profile = user.profile.json()
+            if experiment.available_to_all or \
+               experiment.manager_id == user_profile.pk or \
+               user_profile.experiments.filter(pk=experiment.pk).exists():
+                
+                profile = user_profile.json()
             else:
                 status = "fail"
                 message = "permission denied"
 
-        logger.info(f"Get Auth Result: status {status}, message {message}")
+        logger.info(f"Get Auth Result: status - {status}, message - {message}")
 
         return Response({"status" : status,
                          "message" : message,
