@@ -39,7 +39,7 @@ class Profile(models.Model):
         verbose_name_plural = 'Profiles'
         ordering = ['user__last_name', 'user__first_name']
     
-    def json(self):
+    def json(self) -> dict:
         '''
         return json object of model
         '''

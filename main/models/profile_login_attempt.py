@@ -22,10 +22,9 @@ class ProfileLoginAttempt(models.Model):
         verbose_name_plural = 'Profile Login Attempts'
         ordering = ['-timestamp']
     
-    def json(self):
+    def json(self) -> dict:
         return {
             "id" : self.id,
-            "success" : self.trait.success,
             "note" : self.note,
             "timestamp" : self.timestamp,
             "updated" : self.updated,

@@ -17,10 +17,10 @@ class HelpDocs(models.Model):
     def __str__(self):
         return self.title + " " + self.path
     
-    def json(self):
+    def json(self) -> dict:
         return{
             "id":self.id,
-            "name":self.name,
+            "title":self.title,
             "path":self.path,
             "text":self.text,
         }

@@ -25,7 +25,7 @@ class Experiments(models.Model):
         verbose_name_plural = 'Experiments'
         ordering = ['name']
 
-    def json(self):
+    def json(self) -> dict:
         '''
         return json representation of the experiment
         '''
