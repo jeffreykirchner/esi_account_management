@@ -21,7 +21,7 @@ class FrontPageNotice(models.Model):
         verbose_name = 'Login Page Notice'
         verbose_name_plural = 'Login Page Notices'
     
-    def json(self):
+    def json(self) -> dict:
         return {
             "id" : self.id,
             "subject_text" : self.subject_text,
