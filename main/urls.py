@@ -2,10 +2,12 @@
 URL Patterns
 '''
 from rest_framework.urlpatterns import format_suffix_patterns
+from oauth2_provider import urls as oauth2_urls
 
 from django.views.generic.base import RedirectView
 from django.urls import path, include
 from django.urls import re_path
+
 
 from main import views
 
@@ -42,6 +44,10 @@ urlpatterns = [
 
     #api
     path('get-auth/', views.GetAuthView.as_view()),
+
+    #oauth
+    path("o/", include(oauth2_urls)),
+    path('users/', views.UserList.as_view()),
 ]
 
 urlpatterns += [
