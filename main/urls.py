@@ -55,7 +55,6 @@ urlpatterns = [
 
     #oauth
     path("o/", include((oauth2_endpoint_views, 'oauth2_provider'), namespace='oauth2_provider')),
-    path('users/', views.UserList.as_view()),
 ]
 
 urlpatterns += [
