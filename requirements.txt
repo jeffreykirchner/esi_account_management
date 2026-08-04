@@ -1,6 +1,6 @@
 asgiref==3.8.1
 crispy-bootstrap5==2025.4
-Django==5.2.14
+Django==5.2.15
 django-cors-headers==4.9.0
 django-crispy-forms==2.4
 django-oauth-toolkit==2.3.0
@@ -11,4 +11,5 @@ psycopg==3.2.6
 pyotp==2.9.0
 requests==2.33.0
 sqlparse==0.5.5
+tzdata==2026.1
 whitenoise==6.10.0
